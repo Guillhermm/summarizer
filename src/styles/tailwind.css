@@ -3,13 +3,8 @@
 @tailwind utilities;
 
 @layer components {
-  .centralize-absolute {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
   .summarizer-hovered {
-    outline: 3px dotted #000;
+    outline: 3px dashed #5ea9ea;
     outline-offset: 5px;
     position: relative;
   }
@@ -20,7 +15,7 @@
     right: -5px;
     top: -5px;
     bottom: -5px;
-    background: #000;
+    background: #5ea9ea;
     opacity: .1;
     display: flex;
     justify-content: center;

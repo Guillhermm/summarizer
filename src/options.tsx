@@ -41,10 +41,11 @@ const Options = () => {
         />
       </div>
       <Button
-        text="Save"
         onClick={saveSettings}
         className="mt-2 p-2 bg-blue-500 text-white"
-      />
+      >
+        Save
+      </Button>
     </div>
   );
 };

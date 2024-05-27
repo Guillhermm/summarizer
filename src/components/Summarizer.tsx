@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { summarizeText } from '../services/summaryService';
 import { Button } from './Button';
 import { Modal } from './Modal';
+import { IconSummarizer } from './Icons/IconSummarizer';
 import '../styles/tailwind.css';
 
 export const Summarizer = () => {
@@ -82,12 +83,13 @@ export const Summarizer = () => {
       {hoveredElement &&
         ReactDOM.createPortal(
           <Button
-            text="Summarizer"
-            className="absolute centralize-absolute z-[9999]"
+            className="absolute right-4 bottom-4 rounded-[50%] z-[9999] hover:scale-110 transition"
             onClick={() => {
               handleSummarizerClick();
             }}
-          />,
+          >
+            <IconSummarizer className="w-6 h-6 text-white" />
+          </Button>,
           // Appends button to the hovered element.
           hoveredElement
         )}

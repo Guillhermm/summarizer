@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classnames from 'classnames';
 
 interface ButtonProps {
-  text: string;
+  children: ReactNode;
   className?: string;
   onClick?: () => void;
 }
 
-export const Button = ({ text, className, onClick }: ButtonProps) => (
+export const Button = ({ children, className, onClick }: ButtonProps) => (
   <button
     className={classnames(
       'p-2 bg-blue-500 text-white rounded cursor-pointer',
@@ -15,6 +15,6 @@ export const Button = ({ text, className, onClick }: ButtonProps) => (
     )}
     onClick={onClick}
   >
-    {text}
+    {children}
   </button>
 );
