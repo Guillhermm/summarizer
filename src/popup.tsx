@@ -20,6 +20,14 @@ const Popup = () => {
     // chrome.storage.sync.set({ isEnabled: newValue });
   };
 
+  const handleOptionsClick = () => {
+    if (chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      window.open(chrome.runtime.getURL('options.html'));
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 divide-y divide-gray-200 w-64">
       <div className="px-4 py-2">
@@ -53,8 +61,7 @@ const Popup = () => {
       </div>
       <a
         className="px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
-        href="options.html"
-        target="_blank"
+        onClick={handleOptionsClick}
       >
         Options
       </a>
