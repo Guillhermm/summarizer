@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Summarizer } from './summarizer';
+import { Summarizer } from './components/Summarizer';
 
 const root = document.createElement('div');
 

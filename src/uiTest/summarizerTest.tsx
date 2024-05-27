@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Summarizer } from './summarizer';
-import './styles/tailwind.css';
+import { Summarizer } from '../components/Summarizer';
+import '../styles/tailwind.css';
 
 const originalTexts: string[] = [
   `
@@ -27,6 +27,17 @@ const originalTexts: string[] = [
     and technology, the very dreams that blister sleep, boil up from
     the basic, magic ring of myth.
   `,
+  `The wonder is that the characteristic efficacy to touch and in­
+  spire deep creative centers dwells in the smallest nursery fairy
+  tale—as the flavor of the ocean is contained in a droplet or the
+  whole mystery of life within the egg of a flea. For the symbols of
+  mythology are not manufactured; they cannot be ordered, in­
+  vented, or permanently suppressed. They are spontaneous pro­
+  ductions of the psyche, and each bears within it, undamaged, the
+  germ power of its source.`,
+  `What is the secret of the timeless vision? From what profundity
+  of the mind does it derive? Why is mythology everywhere the
+  same, beneath its varieties of costume? And what does it teach?`,
 ];
 
 export const SummarizerTest = () => (

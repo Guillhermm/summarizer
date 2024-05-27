@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Button } from './components/Button';
 import './styles/tailwind.css';
-import { Button } from './button';
 
 const Options = () => {
   const [apiKey, setApiKey] = useState('');

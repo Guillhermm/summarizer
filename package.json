@@ -4,7 +4,8 @@
   "description": "A browser extension to summarize text on web pages.",
   "main": "dist/summarizer.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && webpack --mode production",
     "start": "webpack serve --mode development --open"
   },
   "keywords": [],

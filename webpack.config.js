@@ -4,10 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
-    modalTest: './src/modalTest.tsx',
+    modalTest: './src/uiTest/modalTest.tsx',
+    summarizerTest: './src/uiTest/summarizerTest.tsx',
+    // These are the browser extension needed files.
+    ['scripts/content']: './src/contentScript.tsx',
+    background: './src/background.ts',
     options: './src/options.tsx',
-    summarizerTest: './src/summarizerTest.tsx',
-    index: './src/index.tsx',
+    popup: './src/popup.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -39,6 +42,11 @@ module.exports = {
       template: './public/options.html',
       filename: 'options.html',
       chunks: ['options'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/popup.html',
+      filename: 'popup.html',
+      chunks: ['popup'],
     }),
     new HtmlWebpackPlugin({
       template: './public/summarizerTest.html',

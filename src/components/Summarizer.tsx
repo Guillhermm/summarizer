@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { Button } from './button';
-import { Modal } from './modal';
-import { summarizeText } from './services/summaryService';
-import './styles/tailwind.css';
+import { summarizeText } from '../services/summaryService';
+import { Button } from './Button';
+import { Modal } from './Modal';
+import '../styles/tailwind.css';
 
 export const Summarizer = () => {
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(

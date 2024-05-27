@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/tailwind.css';
+import '../styles/tailwind.css';
 
 interface ModalProps {
   onClose: () => void;
