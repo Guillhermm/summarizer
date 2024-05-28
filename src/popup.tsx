@@ -8,19 +8,20 @@ const Popup = () => {
 
   useEffect(() => {
     // Loads the initial state from storage.
-    // chrome.storage.sync.get(['isEnabled'], (result) => {
-    //   setIsEnabled(result.isEnabled ?? false);
-    // });
+    chrome.storage.sync.get(['isEnabled']).then((result) => {
+      setIsEnabled(result.isEnabled ?? false);
+    });
   }, []);
 
   const handleToggleChange = () => {
     const newValue = !isEnabled;
     setIsEnabled(newValue);
     // Saves the new state to storage.
-    // chrome.storage.sync.set({ isEnabled: newValue });
+    chrome.storage.sync.set({ isEnabled: newValue });
   };
 
   const handleOptionsClick = () => {
+    // Opens options in extension manager popup.
     if (chrome.runtime.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     } else {

@@ -1,12 +1,20 @@
 import axios from 'axios';
 
+const getOpenAIApiKey = async (): Promise<string> => {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get(['apiKey']).then((response) => {
+      return resolve(response.apiKey);
+    });
+  });
+};
+
 export const getOpenAIResponse = async (
   content: string,
   maxLength?: number
 ): Promise<string> => {
   const url = 'https://api.openai.com/v1/chat/completions';
-  // We must retrieve key from the browser extension settings.
-  const key = '';
+  const key = await getOpenAIApiKey();
+  console.log('key', key);
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${key}`,

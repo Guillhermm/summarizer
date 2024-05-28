@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Button } from './components/Button';
 import './styles/tailwind.css';
@@ -8,15 +8,21 @@ const Options = () => {
   const [maxLength, setMaxLength] = useState<number>(100);
   const [minWords, setMinWords] = useState<number>(200);
   const [minChars, setMinChars] = useState<number>(1000);
-  // useEffect(() => {
-  //   chrome.storage.sync.get(['apiKey', 'maxLength'], (result) => {
-  //     setApiKey(result.apiKey || '');
-  //     setMaxLength(result.maxLength || 100);
-  //   });
-  // }, []);
+
+  useEffect(() => {
+    chrome.storage.sync.get(
+      ['apiKey', 'maxLength', 'minWords', 'minChars'],
+      (result) => {
+        setApiKey(result.apiKey || '');
+        setMaxLength(result.maxLength || 100);
+        setMinWords(result.minWords || 200);
+        setMinChars(result.minChars || 1000);
+      }
+    );
+  }, []);
 
   const saveSettings = () => {
-    chrome.storage.sync.set({ apiKey, maxLength });
+    chrome.storage.sync.set({ apiKey, maxLength, minWords, minChars });
   };
 
   return (

@@ -13,7 +13,41 @@ export const Summarizer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [summary, setSummary] = useState<string | undefined>(undefined);
 
+  const [isEnabled, setIsEnabled] = useState<boolean>(false);
+  const [maxLength, setMaxLength] = useState<number>(0);
+  const [minWords, setMinWords] = useState<number>(0);
+  const [minChars, setMinChars] = useState<number>(0);
+
   useEffect(() => {
+    // Loads the initial state from storage.
+    chrome.storage.sync
+      .get(['isEnabled', 'maxLength', 'minWords', 'minChars'])
+      .then((result) => {
+        const { isEnabled, maxLength, minWords, minChars } = result;
+        console.log('result', result);
+        if (isEnabled) setIsEnabled(Boolean(isEnabled));
+        if (maxLength) setMaxLength(Number(maxLength));
+        if (minWords) setMinWords(Number(minWords));
+        if (minChars) setMinChars(Number(minChars));
+      });
+
+    // Watches for any changes in options.
+    chrome.storage.onChanged.addListener((changes, namespace) => {
+      console.log('changes', changes);
+      if (namespace === 'sync') {
+        const { isEnabled, maxLength, minWords, minChars } = changes;
+
+        if (isEnabled) setIsEnabled(Boolean(isEnabled.newValue));
+        if (maxLength) setMaxLength(Number(maxLength.newValue));
+        if (minWords) setMinWords(Number(minWords.newValue));
+        if (minChars) setMinChars(Number(minChars.newValue));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isEnabled) return;
+
     const handleMouseOver = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (
@@ -23,9 +57,9 @@ export const Summarizer = () => {
           target.tagName === 'SPAN') &&
         target.textContent &&
         // Min chars allowed (to be in options).
-        target.textContent.length > 1000 &&
+        target.textContent.length > minChars &&
         // Min words allowed (to be in options).
-        target.textContent.split(/\s+/).filter(Boolean).length > 200 &&
+        target.textContent.split(/\s+/).filter(Boolean).length > minWords &&
         // Prevents summarizer modal to also be hovered.
         document.getElementsByClassName('summarizer-modal').length === 0
       ) {
@@ -58,11 +92,9 @@ export const Summarizer = () => {
       document.removeEventListener('mouseover', handleMouseOver);
       document.removeEventListener('mouseout', handleMouseOut);
     };
-  }, []);
+  }, [isEnabled]);
 
   const fetchSummary = async (text: string) => {
-    // Or get from user settings...
-    const maxLength = 100;
     const summaryResult: string = await summarizeText(
       text,
       maxLength,
@@ -79,26 +111,28 @@ export const Summarizer = () => {
   };
 
   return (
-    <>
-      {hoveredElement &&
-        ReactDOM.createPortal(
-          <Button
-            className="absolute right-4 bottom-4 rounded-[50%] z-[9999] hover:scale-110 transition"
-            onClick={() => {
-              handleSummarizerClick();
-            }}
-          >
-            <IconSummarizer className="w-6 h-6 text-white" />
-          </Button>,
-          // Appends button to the hovered element.
-          hoveredElement
+    isEnabled && (
+      <>
+        {hoveredElement &&
+          ReactDOM.createPortal(
+            <Button
+              className="absolute right-4 bottom-4 rounded-[50%] z-[9999] hover:scale-110 transition"
+              onClick={() => {
+                handleSummarizerClick();
+              }}
+            >
+              <IconSummarizer className="w-6 h-6 text-white" />
+            </Button>,
+            // Appends button to the hovered element.
+            hoveredElement
+          )}
+        {modalVisible && summary && (
+          <Modal
+            summarizedText={summary}
+            onClose={() => setModalVisible(false)}
+          />
         )}
-      {modalVisible && summary && (
-        <Modal
-          summarizedText={summary}
-          onClose={() => setModalVisible(false)}
-        />
-      )}
-    </>
+      </>
+    )
   );
 };
