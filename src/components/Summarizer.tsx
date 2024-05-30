@@ -51,7 +51,11 @@ export const Summarizer = () => {
   }, []);
 
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isEnabled) {
+      hoveredElement?.classList.remove('summarizer-hovered');
+      setHoveredElement(null);
+      return;
+    }
 
     const handleMouseOver = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
