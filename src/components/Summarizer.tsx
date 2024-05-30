@@ -4,6 +4,11 @@ import { summarizeText } from '../services/summaryService';
 import { Button } from './Button';
 import { Modal } from './Modal';
 import { IconSummarizer } from './Icons/IconSummarizer';
+import {
+  MAX_SUMMARIZED_TEXT,
+  MIN_TEXT_LENGTH_ALLOWED,
+  MIN_TEXT_WORDS_ALLOWED,
+} from '../utils/constants';
 import '../styles/tailwind.css';
 
 export const Summarizer = () => {
@@ -14,9 +19,9 @@ export const Summarizer = () => {
   const [summary, setSummary] = useState<string | undefined>(undefined);
 
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
-  const [maxLength, setMaxLength] = useState<number>(0);
-  const [minWords, setMinWords] = useState<number>(0);
-  const [minChars, setMinChars] = useState<number>(0);
+  const [maxLength, setMaxLength] = useState<number>(MAX_SUMMARIZED_TEXT);
+  const [minWords, setMinWords] = useState<number>(MIN_TEXT_WORDS_ALLOWED);
+  const [minChars, setMinChars] = useState<number>(MIN_TEXT_LENGTH_ALLOWED);
 
   useEffect(() => {
     // Loads the initial state from storage.
@@ -63,6 +68,15 @@ export const Summarizer = () => {
         // Prevents summarizer modal to also be hovered.
         document.getElementsByClassName('summarizer-modal').length === 0
       ) {
+        console.log('tag', target.tagName);
+        console.log('text', target.textContent);
+        console.log('length', target.textContent.length);
+        console.log(
+          'words',
+          target.textContent.split(/\s+/).filter(Boolean).length
+        );
+        console.log('min lenght allowed', minChars);
+        console.log('min words allowed', minWords);
         setHoveredElement(target);
         target.classList.add('summarizer-hovered');
       }

@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Button } from './components/Button';
+import {
+  MAX_SUMMARIZED_TEXT,
+  MIN_TEXT_LENGTH_ALLOWED,
+  MIN_TEXT_WORDS_ALLOWED,
+} from './utils/constants';
 import './styles/tailwind.css';
 
 const Options = () => {
   const [apiKey, setApiKey] = useState<string>('');
-  const [maxLength, setMaxLength] = useState<number>(100);
-  const [minWords, setMinWords] = useState<number>(200);
-  const [minChars, setMinChars] = useState<number>(1000);
+  const [maxLength, setMaxLength] = useState<number>(MAX_SUMMARIZED_TEXT);
+  const [minWords, setMinWords] = useState<number>(MIN_TEXT_WORDS_ALLOWED);
+  const [minChars, setMinChars] = useState<number>(MIN_TEXT_LENGTH_ALLOWED);
 
   useEffect(() => {
     chrome.storage.sync.get(
       ['apiKey', 'maxLength', 'minWords', 'minChars'],
       (result) => {
         setApiKey(result.apiKey || '');
-        setMaxLength(result.maxLength || 100);
-        setMinWords(result.minWords || 200);
-        setMinChars(result.minChars || 1000);
+        setMaxLength(result.maxLength || MAX_SUMMARIZED_TEXT);
+        setMinWords(result.minWords || MIN_TEXT_WORDS_ALLOWED);
+        setMinChars(result.minChars || MIN_TEXT_LENGTH_ALLOWED);
       }
     );
   }, []);
