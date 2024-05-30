@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import './styles/tailwind.css';
 import { IconSummarizer } from './components/Icons/IconSummarizer';
+import './styles/tailwind.css';
 
 const Popup = () => {
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
@@ -50,10 +50,14 @@ const Popup = () => {
               checked={isEnabled}
               onChange={handleToggleChange}
             />
-            <div className="block bg-gray-600 w-10 h-6 rounded-full"></div>
+            <div
+              className={`block w-10 h-6 rounded-full ${
+                isEnabled ? 'bg-blue-500' : 'bg-gray-600'
+              }`}
+            />
             <div
               className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${
-                isEnabled ? 'transform translate-x-full bg-blue-500' : ''
+                isEnabled ? 'transform translate-x-full' : ''
               }`}
             />
           </div>
@@ -61,7 +65,7 @@ const Popup = () => {
         </label>
       </div>
       <a
-        className="px-4 py-2 text-base text-gray-700 hover:bg-gray-100"
+        className="px-4 py-2 text-base text-gray-700 cursor-pointer hover:bg-gray-100"
         onClick={handleOptionsClick}
       >
         Options
