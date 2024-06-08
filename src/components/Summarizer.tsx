@@ -24,9 +24,7 @@ export const Summarizer = ({
   minChars = MIN_TEXT_LENGTH_ALLOWED,
   minWords = MIN_TEXT_WORDS_ALLOWED,
 }: SummarizerProps) => {
-  const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(
-    null
-  );
+  const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [summary, setSummary] = useState<string | undefined>(undefined);
 
@@ -41,9 +39,7 @@ export const Summarizer = ({
       const target = event.target as HTMLElement;
       if (
         target &&
-        (target.tagName === 'DIV' ||
-          target.tagName === 'P' ||
-          target.tagName === 'SPAN') &&
+        (target.tagName === 'DIV' || target.tagName === 'P' || target.tagName === 'SPAN') &&
         target.textContent &&
         // Min chars allowed (to be in options).
         target.textContent.length > minChars &&
@@ -55,10 +51,7 @@ export const Summarizer = ({
         console.log('tag', target.tagName);
         console.log('text', target.textContent);
         console.log('length', target.textContent.length);
-        console.log(
-          'words',
-          target.textContent.split(/\s+/).filter(Boolean).length
-        );
+        console.log('words', target.textContent.split(/\s+/).filter(Boolean).length);
         console.log('min lenght allowed', minChars);
         console.log('min words allowed', minWords);
         setHoveredElement(target);
@@ -93,11 +86,7 @@ export const Summarizer = ({
   }, [isEnabled]);
 
   const fetchSummary = async (text: string) => {
-    const summaryResult: string = await summarizeText(
-      text,
-      maxLength,
-      'openai'
-    );
+    const summaryResult: string = await summarizeText(text, maxLength, 'openai');
     setSummary(summaryResult);
   };
 
@@ -125,10 +114,7 @@ export const Summarizer = ({
             hoveredElement
           )}
         {modalVisible && summary && (
-          <Modal
-            summarizedText={summary}
-            onClose={() => setModalVisible(false)}
-          />
+          <Modal summarizedText={summary} onClose={() => setModalVisible(false)} />
         )}
       </>
     )

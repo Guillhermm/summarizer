@@ -38,10 +38,7 @@ const Popup = () => {
         </h1>
       </div>
       <div className="px-4 py-2">
-        <label
-          htmlFor="enableToggle"
-          className="flex items-center gap-2 cursor-pointer"
-        >
+        <label htmlFor="enableToggle" className="flex items-center gap-2 cursor-pointer">
           <div className="relative">
             <input
               type="checkbox"
@@ -51,9 +48,7 @@ const Popup = () => {
               onChange={handleToggleChange}
             />
             <div
-              className={`block w-10 h-6 rounded-full ${
-                isEnabled ? 'bg-blue-500' : 'bg-gray-600'
-              }`}
+              className={`block w-10 h-6 rounded-full ${isEnabled ? 'bg-blue-500' : 'bg-gray-600'}`}
             />
             <div
               className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${

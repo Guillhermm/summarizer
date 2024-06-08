@@ -8,10 +8,7 @@ const getOpenAIApiKey = async (): Promise<string> => {
   });
 };
 
-export const getOpenAIResponse = async (
-  content: string,
-  maxLength?: number
-): Promise<string> => {
+export const getOpenAIResponse = async (content: string, maxLength?: number): Promise<string> => {
   const url = 'https://api.openai.com/v1/chat/completions';
   const key = await getOpenAIApiKey();
   console.log('key', key);

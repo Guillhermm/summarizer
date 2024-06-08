@@ -15,16 +15,14 @@ const Summarizer = () => {
 
   useEffect(() => {
     // Loads the initial state from storage.
-    chrome.storage.sync
-      .get(['isEnabled', 'maxLength', 'minWords', 'minChars'])
-      .then((result) => {
-        const { isEnabled, maxLength, minWords, minChars } = result;
-        console.log('result', result);
-        if (isEnabled) setIsEnabled(Boolean(isEnabled));
-        if (maxLength) setMaxLength(Number(maxLength));
-        if (minWords) setMinWords(Number(minWords));
-        if (minChars) setMinChars(Number(minChars));
-      });
+    chrome.storage.sync.get(['isEnabled', 'maxLength', 'minWords', 'minChars']).then((result) => {
+      const { isEnabled, maxLength, minWords, minChars } = result;
+      console.log('result', result);
+      if (isEnabled) setIsEnabled(Boolean(isEnabled));
+      if (maxLength) setMaxLength(Number(maxLength));
+      if (minWords) setMinWords(Number(minWords));
+      if (minChars) setMinChars(Number(minChars));
+    });
 
     // Watches for any changes in options.
     chrome.storage.onChanged.addListener((changes, namespace) => {
