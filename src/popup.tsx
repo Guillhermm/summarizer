@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { IconSummarizer } from './components/Icons/IconSummarizer';
+import { configs } from './configs';
 import './styles/tailwind.css';
 
 const Popup = () => {
+  const { popup } = configs;
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Popup = () => {
       <div className="px-4 py-2">
         <h1 className="text-lg font-bold flex items-center gap-2">
           <IconSummarizer className="w-6 h-6" />
-          Summarizer
+          {popup.name}
         </h1>
       </div>
       <div className="px-4 py-2">
@@ -56,14 +58,14 @@ const Popup = () => {
               }`}
             />
           </div>
-          <div className="text-base text-gray-700">Enable/Disable</div>
+          <div className="text-base text-gray-700">{popup.toggle.label}</div>
         </label>
       </div>
       <a
         className="px-4 py-2 text-base text-gray-700 cursor-pointer hover:bg-gray-100"
         onClick={handleOptionsClick}
       >
-        Options
+        {popup.action.label}
       </a>
     </div>
   );

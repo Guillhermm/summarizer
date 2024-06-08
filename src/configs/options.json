@@ -1,0 +1,20 @@
+{
+  "apiKey": {
+    "label": "OpenAI API Key",
+    "placeholder": "API Key",
+    "text": "To use this extension, users have to create an account in OpenAI and get a key to set it in here.",
+    "type": "text"
+  },
+  "maxLength": {
+    "label": "Max Length",
+    "type": "number"
+  },
+  "minChars": {
+    "label": "Min Chars",
+    "type": "number"
+  },
+  "minWords": {
+    "label": "Min Words",
+    "type": "number"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Summarizer",
+  "toggle": {
+    "label": "Enable/Disable"
+  },
+  "action": {
+    "label": "Options"
+  }
+}

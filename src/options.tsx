@@ -8,19 +8,21 @@ import {
 } from './utils/constants';
 import './styles/tailwind.css';
 import { FormOption } from './components/FormOption';
+import { configs } from './configs';
 
 const Options = () => {
+  const { options } = configs;
   const [apiKey, setApiKey] = useState<string>('');
   const [maxLength, setMaxLength] = useState<number>(MAX_SUMMARIZED_TEXT);
-  const [minWords, setMinWords] = useState<number>(MIN_TEXT_WORDS_ALLOWED);
   const [minChars, setMinChars] = useState<number>(MIN_TEXT_LENGTH_ALLOWED);
+  const [minWords, setMinWords] = useState<number>(MIN_TEXT_WORDS_ALLOWED);
 
   useEffect(() => {
-    chrome.storage.sync.get(['apiKey', 'maxLength', 'minWords', 'minChars'], (result) => {
+    chrome.storage.sync.get(['apiKey', 'maxLength', 'minChars', 'minWords'], (result) => {
       setApiKey(result.apiKey || '');
       setMaxLength(result.maxLength || MAX_SUMMARIZED_TEXT);
-      setMinWords(result.minWords || MIN_TEXT_WORDS_ALLOWED);
       setMinChars(result.minChars || MIN_TEXT_LENGTH_ALLOWED);
+      setMinWords(result.minWords || MIN_TEXT_WORDS_ALLOWED);
     });
   }, []);
 
@@ -28,35 +30,19 @@ const Options = () => {
     chrome.storage.sync.set({ apiKey, maxLength, minWords, minChars });
   };
 
-  const configs = {
-    apiKey: {
-      label: 'OpenAI API Key',
-      placeholder: 'API Key',
-      text: 'To use this extension, users have to create an account in OpenAI and get a key to set it in here.',
-      type: 'text',
-    },
-    maxLength: {
-      label: 'Max Length',
-      type: 'number',
-    },
-    minChars: {
-      label: 'Min Chars',
-      type: 'number',
-    },
-    minWords: {
-      label: 'Min Words',
-      type: 'number',
-    },
-  };
+  const handleChangeKey = (value: string) => setApiKey(value);
+  const handleChangeMaxLength = (value: string) => setMaxLength(Number(value));
+  const handleChangeMinChars = (value: string) => setMinChars(Number(value));
+  const handleChangeMinWords = (value: string) => setMinWords(Number(value));
 
   return (
     <Form
-      mainOption={<FormOption {...configs.apiKey} handleChange={setApiKey} value={apiKey} />}
+      mainOption={<FormOption {...options.apiKey} handleChange={handleChangeKey} value={apiKey} />}
       saveSettings={saveSettings}
     >
-      <FormOption {...configs.maxLength} handleChange={setMaxLength} value={maxLength} />
-      <FormOption {...configs.minChars} handleChange={setMinChars} value={minChars} />
-      <FormOption {...configs.minWords} handleChange={setMinWords} value={minWords} />
+      <FormOption {...options.maxLength} handleChange={handleChangeMaxLength} value={maxLength} />
+      <FormOption {...options.minChars} handleChange={handleChangeMinChars} value={minChars} />
+      <FormOption {...options.minWords} handleChange={handleChangeMinWords} value={minWords} />
     </Form>
   );
 };

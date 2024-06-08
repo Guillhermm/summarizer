@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/tailwind.css';
 
 export interface FormProps {
-  handleChange?: any;
+  handleChange?: (value: string) => void;
   label: string;
   placeholder?: string;
   text?: string;
