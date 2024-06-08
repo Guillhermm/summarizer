@@ -33,6 +33,6 @@ export const Modal = ({ onClose, summarizedText }: ModalProps) => {
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };

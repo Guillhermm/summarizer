@@ -111,7 +111,7 @@ export const Summarizer = ({
               <IconSummarizer className="w-6 h-6 text-white" />
             </Button>,
             // Appends button to the hovered element.
-            hoveredElement
+            hoveredElement,
           )}
         {modalVisible && summary && (
           <Modal summarizedText={summary} onClose={() => setModalVisible(false)} />
