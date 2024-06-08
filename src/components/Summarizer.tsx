@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { summarizeText } from '../services/summaryService';
 import { Button } from './Button';
 import { Modal } from './Modal';
 import { IconSummarizer } from './Icons/IconSummarizer';
+import { summarizeText } from '../services/summaryService';
 import {
   MAX_SUMMARIZED_TEXT,
   MIN_TEXT_LENGTH_ALLOWED,
@@ -11,44 +11,24 @@ import {
 } from '../utils/constants';
 import '../styles/tailwind.css';
 
-export const Summarizer = () => {
+export interface SummarizerProps {
+  isEnabled?: boolean;
+  maxLength?: number;
+  minChars?: number;
+  minWords?: number;
+}
+
+export const Summarizer = ({
+  isEnabled = false,
+  maxLength = MAX_SUMMARIZED_TEXT,
+  minChars = MIN_TEXT_LENGTH_ALLOWED,
+  minWords = MIN_TEXT_WORDS_ALLOWED,
+}: SummarizerProps) => {
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(
     null
   );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [summary, setSummary] = useState<string | undefined>(undefined);
-
-  const [isEnabled, setIsEnabled] = useState<boolean>(false);
-  const [maxLength, setMaxLength] = useState<number>(MAX_SUMMARIZED_TEXT);
-  const [minWords, setMinWords] = useState<number>(MIN_TEXT_WORDS_ALLOWED);
-  const [minChars, setMinChars] = useState<number>(MIN_TEXT_LENGTH_ALLOWED);
-
-  useEffect(() => {
-    // Loads the initial state from storage.
-    chrome.storage.sync
-      .get(['isEnabled', 'maxLength', 'minWords', 'minChars'])
-      .then((result) => {
-        const { isEnabled, maxLength, minWords, minChars } = result;
-        console.log('result', result);
-        if (isEnabled) setIsEnabled(Boolean(isEnabled));
-        if (maxLength) setMaxLength(Number(maxLength));
-        if (minWords) setMinWords(Number(minWords));
-        if (minChars) setMinChars(Number(minChars));
-      });
-
-    // Watches for any changes in options.
-    chrome.storage.onChanged.addListener((changes, namespace) => {
-      console.log('changes', changes);
-      if (namespace === 'sync') {
-        const { isEnabled, maxLength, minWords, minChars } = changes;
-
-        if (isEnabled) setIsEnabled(Boolean(isEnabled.newValue));
-        if (maxLength) setMaxLength(Number(maxLength.newValue));
-        if (minWords) setMinWords(Number(minWords.newValue));
-        if (minChars) setMinChars(Number(minChars.newValue));
-      }
-    });
-  }, []);
 
   useEffect(() => {
     if (!isEnabled) {

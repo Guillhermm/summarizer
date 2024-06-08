@@ -47,7 +47,7 @@ export const SummarizerTest = () => (
         <div key={id}>{text}</div>
       ))}
     </div>
-    <Summarizer />
+    <Summarizer isEnabled />
   </>
 );
 
