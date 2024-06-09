@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconSummarizer } from './Icons/IconSummarizer';
+import { configs } from '../configs';
 import '../styles/tailwind.css';
 
 export interface PopupProps {
@@ -17,7 +18,7 @@ export const Popup = ({
     <div className="px-4 py-2">
       <h1 className="text-lg font-bold flex items-center gap-2">
         <IconSummarizer className="w-6 h-6" />
-        Summarizer
+        {configs.popup.name}
       </h1>
     </div>
     <div className="px-4 py-2">
@@ -39,14 +40,14 @@ export const Popup = ({
             }`}
           />
         </div>
-        <div className="text-base text-gray-700">Enable/Disable</div>
+        <div className="text-base text-gray-700">{configs.popup.toggle.label}</div>
       </label>
     </div>
     <a
       className="px-4 py-2 text-base text-gray-700 cursor-pointer hover:bg-gray-100"
       onClick={handleOptionsClick}
     >
-      Options
+      {configs.popup.action.label}
     </a>
   </div>
 );

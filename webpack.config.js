@@ -4,8 +4,10 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
   entry: {
-    modalTest: './src/uiTest/modalTest.tsx',
-    summarizerTest: './src/uiTest/summarizerTest.tsx',
+    previewModal: './src/preview/PreviewModal.tsx',
+    previewOptions: './src/preview/PreviewOptions.tsx',
+    previewPopup: './src/preview/PreviewPopup.tsx',
+    previewSummarizer: './src/preview/PreviewSummarizer.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -27,16 +29,27 @@ const config = {
       },
     ],
   },
+  // Preview how these components will look and behave in dev mode.
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/modalTest.html',
-      filename: 'modalTest.html',
-      chunks: ['modalTest'],
+      template: './public/preview/modal.html',
+      filename: 'preview/modal.html',
+      chunks: ['previewModal'],
     }),
     new HtmlWebpackPlugin({
-      template: './public/summarizerTest.html',
-      filename: 'summarizerTest.html',
-      chunks: ['summarizerTest'],
+      template: './public/preview/options.html',
+      filename: 'preview/options.html',
+      chunks: ['previewOptions'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/preview/popup.html',
+      filename: 'preview/popup.html',
+      chunks: ['previewPopup'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/preview/summarizer.html',
+      filename: 'preview/summarizer.html',
+      chunks: ['previewSummarizer'],
     }),
   ],
 };

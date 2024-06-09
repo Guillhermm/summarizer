@@ -40,7 +40,7 @@ const originalTexts: string[] = [
   same, beneath its varieties of costume? And what does it teach?`,
 ];
 
-export const SummarizerTest = () => (
+const PreviewSummarizer = () => (
   <>
     <div className="m-8 p-4">
       {originalTexts.map((text, id) => (
@@ -55,5 +55,5 @@ const container = document.getElementById('root');
 
 if (container) {
   const root = createRoot(container);
-  root.render(<SummarizerTest />);
+  root.render(<PreviewSummarizer />);
 }
