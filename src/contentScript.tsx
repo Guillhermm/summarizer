@@ -57,5 +57,5 @@ const rootDiv = ReactDOM.createRoot(root);
 rootDiv.render(
   <React.StrictMode>
     <Summarizer />
-  </React.StrictMode>,
+  </React.StrictMode>
 );

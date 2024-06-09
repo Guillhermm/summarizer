@@ -36,9 +36,9 @@ const PreviewOptions = () => {
   );
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-black bg-opacity-10">
-      <div className="w-[400px] max-h-screen overflow-y-auto bg-white absolute rounded-lg shadow-xl">
-        <div className="pt-4">
+    <div className="tw-summarizer-w-screen tw-summarizer-h-screen tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-bg-black tw-summarizer-bg-opacity-10">
+      <div className="tw-summarizer-w-[400px] tw-summarizer-max-h-screen tw-summarizer-overflow-y-auto tw-summarizer-bg-white tw-summarizer-absolute tw-summarizer-rounded-lg tw-summarizer-shadow-xl">
+        <div className="tw-summarizer-pt-4">
           <Options />
         </div>
       </div>

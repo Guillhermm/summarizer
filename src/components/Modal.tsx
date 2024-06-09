@@ -9,9 +9,12 @@ interface ModalProps {
 
 export const Modal = ({ onClose, summarizedText }: ModalProps) => {
   return ReactDOM.createPortal(
-    <div className="summarizer-modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-10 z-[99999]">
-      <div className="relative bg-white p-6 rounded-lg shadow-xl w-1/2 h-auto">
-        <button className="absolute top-0 right-0 m-3 p-1 rounded-full" onClick={onClose}>
+    <div className="summarizer-modal tw-summarizer-fixed tw-summarizer-inset-0 tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-bg-black tw-summarizer-bg-opacity-10 tw-summarizer-z-[99999]">
+      <div className="tw-summarizer-relative tw-summarizer-bg-white tw-summarizer-p-6 tw-summarizer-rounded-lg tw-summarizer-shadow-xl tw-summarizer-w-1/2 tw-summarizer-h-auto">
+        <button
+          className="tw-summarizer-absolute tw-summarizer-top-0 tw-summarizer-right-0 tw-summarizer-m-3 tw-summarizer-p-1 tw-summarizer-rounded-full"
+          onClick={onClose}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
@@ -28,11 +31,15 @@ export const Modal = ({ onClose, summarizedText }: ModalProps) => {
           </svg>
         </button>
         <div className="modal-body">
-          <h1 className="text-xl font-bold mb-4">Summarizer</h1>
-          <div className="p-4 border border-gray-300 rounded-lg">{summarizedText}</div>
+          <h1 className="tw-summarizer-text-xl tw-summarizer-font-bold tw-summarizer-mb-4">
+            Summarizer
+          </h1>
+          <div className="tw-summarizer-p-4 tw-summarizer-border tw-summarizer-border-gray-300 tw-summarizer-rounded-lg">
+            {summarizedText}
+          </div>
         </div>
       </div>
     </div>,
-    document.body,
+    document.body
   );
 };

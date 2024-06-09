@@ -10,7 +10,7 @@ interface ButtonProps {
 export const Button = ({ children, className, onClick }: ButtonProps) => (
   <button
     className={classnames(
-      'p-2 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600',
+      'tw-summarizer-p-2 tw-summarizer-bg-blue-500 tw-summarizer-text-white tw-summarizer-rounded tw-summarizer-cursor-pointer hover:tw-summarizer-bg-blue-600',
       className
     )}
     onClick={onClick}

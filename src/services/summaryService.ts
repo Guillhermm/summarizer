@@ -3,7 +3,7 @@ import { getOpenAIResponse } from './openaiService';
 export const summarizeText = async (
   text: string,
   maxLength: number,
-  service: string,
+  service: string
 ): Promise<string> => {
   // Better specifying max length within prompt than using max_tokens
   // since with max_tokens the response is sometimes getting cut.

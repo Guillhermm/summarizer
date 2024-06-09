@@ -11,14 +11,14 @@ export interface FormProps {
 }
 
 export const FormOption = ({ label, handleChange, placeholder, text, type, value }: FormProps) => (
-  <div className="flex flex-col gap-1">
-    <label className="font-bold">{label}</label>
+  <div className="tw-summarizer-flex tw-summarizer-flex-col tw-summarizer-gap-1">
+    <label className="tw-summarizer-font-bold">{label}</label>
     {text && <p>{text}</p>}
     <input
       type={type}
       value={value}
       onChange={handleChange ? (e) => handleChange(e.target.value) : undefined}
-      className="border p-1 w-full"
+      className="tw-summarizer-border tw-summarizer-p-1 tw-summarizer-w-full"
       placeholder={placeholder ?? label}
     />
   </div>

@@ -103,15 +103,15 @@ export const Summarizer = ({
         {hoveredElement &&
           ReactDOM.createPortal(
             <Button
-              className="absolute right-4 bottom-4 rounded-[50%] z-[9999] hover:scale-110 transition"
+              className="tw-summarizer-absolute tw-summarizer-right-4 tw-summarizer-bottom-4 tw-summarizer-rounded-[50%] tw-summarizer-z-[9999] tw-summarizer-transition hover:tw-summarizer-scale-110"
               onClick={() => {
                 handleSummarizerClick();
               }}
             >
-              <IconSummarizer className="w-6 h-6 text-white" />
+              <IconSummarizer className="tw-summarizer-w-6 tw-summarizer-h-6 tw-summarizer-text-white" />
             </Button>,
             // Appends button to the hovered element.
-            hoveredElement,
+            hoveredElement
           )}
         {modalVisible && summary && (
           <Modal summarizedText={summary} onClose={() => setModalVisible(false)} />

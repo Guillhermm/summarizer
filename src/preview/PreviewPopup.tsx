@@ -12,8 +12,8 @@ const Popup = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-black bg-opacity-10">
-      <div className="bg-white absolute rounded-lg shadow-xl">
+    <div className="tw-summarizer-w-screen tw-summarizer-h-screen tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-bg-black tw-summarizer-bg-opacity-10">
+      <div className="tw-summarizer-bg-white tw-summarizer-absolute tw-summarizer-rounded-lg tw-summarizer-shadow-xl">
         <PopupUI
           handleToggleChange={handleToggleChange}
           handleOptionsClick={() => {

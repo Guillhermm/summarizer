@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Form } from './components/Form';
+import { FormOption } from './components/FormOption';
+import { configs } from './configs';
 import {
   MAX_SUMMARIZED_TEXT,
   MIN_TEXT_LENGTH_ALLOWED,
   MIN_TEXT_WORDS_ALLOWED,
 } from './utils/constants';
-import './styles/tailwind.css';
-import { FormOption } from './components/FormOption';
-import { configs } from './configs';
 
 const Options = () => {
   const { options } = configs;
@@ -51,5 +50,9 @@ const container = document.getElementById('root');
 
 if (container) {
   const root = createRoot(container);
-  root.render(<Options />);
+  root.render(
+    <React.StrictMode>
+      <Options />
+    </React.StrictMode>
+  );
 }

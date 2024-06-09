@@ -42,7 +42,7 @@ const originalTexts: string[] = [
 
 const PreviewSummarizer = () => (
   <>
-    <div className="m-8 p-4">
+    <div className="tw-summarizer-m-8 tw-summarizer-p-4">
       {originalTexts.map((text, id) => (
         <div key={id}>{text}</div>
       ))}
