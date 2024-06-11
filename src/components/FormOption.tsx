@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/tailwind.css';
 
 export interface FormProps {
   handleChange?: (value: string) => void;

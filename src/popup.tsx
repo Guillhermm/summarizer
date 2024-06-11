@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Popup as PopupUI } from './components/Popup';
+import { ShadowRoot } from './components/ShadowRoot';
 
 const Popup = () => {
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
@@ -43,7 +44,9 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <Popup />
+      <ShadowRoot>
+        <Popup />
+      </ShadowRoot>
     </React.StrictMode>
   );
 }

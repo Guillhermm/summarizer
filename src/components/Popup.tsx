@@ -1,7 +1,6 @@
 import React from 'react';
 import { IconSummarizer } from './Icons/IconSummarizer';
 import { configs } from '../configs';
-import '../styles/tailwind.css';
 
 export interface PopupProps {
   isEnabled?: boolean;

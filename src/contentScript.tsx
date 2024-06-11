@@ -6,6 +6,7 @@ import {
   MIN_TEXT_LENGTH_ALLOWED,
   MIN_TEXT_WORDS_ALLOWED,
 } from './utils/constants';
+import './styles/index.css';
 
 const Summarizer = () => {
   const [isEnabled, setIsEnabled] = useState<boolean>(false);

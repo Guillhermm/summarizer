@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Form } from './components/Form';
 import { FormOption } from './components/FormOption';
+import { ShadowRoot } from './components/ShadowRoot';
 import { configs } from './configs';
 import {
   MAX_SUMMARIZED_TEXT,
@@ -52,7 +53,9 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <Options />
+      <ShadowRoot>
+        <Options />
+      </ShadowRoot>
     </React.StrictMode>
   );
 }

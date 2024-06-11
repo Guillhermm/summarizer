@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Popup as PopupUI } from '../components/Popup';
-import '../styles/tailwind.css';
+import '../styles/index.css';
 
 const Popup = () => {
   const [isEnabled, setIsEnabled] = useState<boolean>(false);

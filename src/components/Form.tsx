@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
 import { Button } from './Button';
-import '../styles/tailwind.css';
 
 export interface FormProps {
   children: ReactNode;

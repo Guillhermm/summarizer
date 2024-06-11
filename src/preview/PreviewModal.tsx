@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Modal } from '../components/Modal';
-import '../styles/tailwind.css';
+import '../styles/index.css';
 
 const summarizedText = `
   Lorem ipsum dolor sit amet, consectetur adipiscing elit,
