@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconSummarizer } from './Icons/IconSummarizer';
+import { IconSummarizer } from './Icons';
 import { configs } from '../configs';
 
 export interface PopupProps {

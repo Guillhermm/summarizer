@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { IconClose } from './Icons/IconClose';
+import { IconClose } from './Icons';
 
 interface ModalProps {
   onClose: () => void;
