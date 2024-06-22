@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from './Button';
-import { Modal } from './Modal';
 import { IconSummarizer } from './Icons';
+import { Modal } from './Modal';
 import { summarizeText } from '../services/summaryService';
 import {
   MAX_SUMMARIZED_TEXT,

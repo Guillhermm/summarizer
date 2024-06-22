@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Button } from './Button';
 import { Accordion, AccordionTrigger, AccordionHeader, AccordionBody } from './Accordion';
+import { Link } from './Link';
 
 export interface FormProps {
   children: ReactNode;
@@ -16,15 +17,15 @@ export const Form = ({ children, mainOption, saveSettings }: FormProps) => (
           Designed for Chrome, this browser extension is a helper utility that leverages generative
           AI capabilities to provide a way to save you time when reading any kind of long texts.
           <br />
-          The version 1.0 exclusively relies on <a href="https://openai.com/api/">OpenAI API</a> to
-          work, based on model{' '}
-          <a
+          The version 1.0 exclusively relies on{' '}
+          <Link href="https://openai.com/api/">OpenAI API</Link> to work, based on model{' '}
+          <Link
             href="https://platform.openai.com/docs/models/gpt-3-5-turbo"
             target="_blank"
             rel="noreferrer"
           >
             GPT-3.5 Turbo
-          </a>
+          </Link>
           . Other generative AIs like Gemini, from Google, might be supported in future versions.
         </p>
         {mainOption}
@@ -47,7 +48,7 @@ export const Form = ({ children, mainOption, saveSettings }: FormProps) => (
       <div className="tw-summarizer-p-4 tw-summarizer-flex tw-summarizer-flex-col tw-summarizer-gap-4">
         <Button
           onClick={saveSettings}
-          className="tw-summarizer-w-32 tw-summarizer-px-4 tw-summarizer-py-2 tw-summarizer-bg-blue-500 tw-summarizer-text-white"
+          className="tw-summarizer-w-32 tw-summarizer-px-4 tw-summarizer-py-2 tw-summarizer-font-medium"
         >
           Save
         </Button>
