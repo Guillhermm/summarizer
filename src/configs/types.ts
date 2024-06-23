@@ -10,6 +10,9 @@ export type ConfigOptions = {
   maxLength: ConfigFormOption;
   minChars: ConfigFormOption;
   minWords: ConfigFormOption;
+  validation: {
+    empty: string;
+  };
 };
 
 export type ConfigPopup = {

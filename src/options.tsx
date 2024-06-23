@@ -37,12 +37,29 @@ const Options = () => {
 
   return (
     <Form
-      mainOption={<FormOption {...options.apiKey} handleChange={handleChangeKey} value={apiKey} />}
+      mainOption={
+        <FormOption {...options.apiKey} handleChange={handleChangeKey} value={apiKey} isRequired />
+      }
       saveSettings={saveSettings}
     >
-      <FormOption {...options.maxLength} handleChange={handleChangeMaxLength} value={maxLength} />
-      <FormOption {...options.minChars} handleChange={handleChangeMinChars} value={minChars} />
-      <FormOption {...options.minWords} handleChange={handleChangeMinWords} value={minWords} />
+      <FormOption
+        {...options.maxLength}
+        handleChange={handleChangeMaxLength}
+        value={maxLength}
+        isRequired
+      />
+      <FormOption
+        {...options.minChars}
+        handleChange={handleChangeMinChars}
+        value={minChars}
+        isRequired
+      />
+      <FormOption
+        {...options.minWords}
+        handleChange={handleChangeMinWords}
+        value={minWords}
+        isRequired
+      />
     </Form>
   );
 };
