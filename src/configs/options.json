@@ -3,6 +3,7 @@
     "label": "OpenAI API Key",
     "placeholder": "API Key",
     "text": "To use this extension, users have to create an account in OpenAI and get a key to set it in here.",
+    "textHelper": "Once the key is filled in, press tab to have it validated",
     "type": "text"
   },
   "maxLength": {

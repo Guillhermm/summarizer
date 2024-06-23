@@ -9,6 +9,7 @@ export type ConfigFormOption = {
   label: string;
   placeholder?: string;
   text?: string;
+  textHelper?: string;
   type: string;
 };
 

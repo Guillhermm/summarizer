@@ -9,6 +9,7 @@ export interface FormProps {
   min?: number;
   placeholder?: string;
   text?: string;
+  textHelper?: string;
   type: React.HTMLInputTypeAttribute;
   value?: string | number | readonly string[];
 }
@@ -21,6 +22,7 @@ export const FormOption = ({
   min,
   placeholder,
   text,
+  textHelper,
   type,
   value,
 }: FormProps) => {
@@ -56,6 +58,9 @@ export const FormOption = ({
         placeholder={placeholder ?? label}
         className="tw-summarizer-border tw-summarizer-p-1 tw-summarizer-w-full"
       />
+      {textHelper && (
+        <p className="tw-summarizer-text-sm tw-summarizer-font-medium">{textHelper}</p>
+      )}
       {error && (
         <p className="tw-summarizer-text-red-500 tw-summarizer-text-sm tw-summarizer-font-medium">
           {error}
