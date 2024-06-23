@@ -6,15 +6,18 @@
     "type": "text"
   },
   "maxLength": {
-    "label": "Max Length",
+    "label": "Max Summarized Text",
+    "text": "Set the maximum number of characters the summarized text should have.",
     "type": "number"
   },
   "minChars": {
-    "label": "Min Chars",
+    "label": "Min Original Text (chars)",
+    "text": "Set the minimum number of characters in a web page text to be detected.",
     "type": "number"
   },
   "minWords": {
-    "label": "Min Words",
+    "label": "Min Original Text (words)",
+    "text": "Set the minimum number of words in a web page text to be detected.",
     "type": "number"
   }
 }
