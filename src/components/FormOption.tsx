@@ -48,7 +48,7 @@ export const FormOption = ({
       <label className="tw-summarizer-font-bold">
         {label} {isRequired && <span className="tw-summarizer-text-red-500">*</span>}
       </label>
-      {text && <p>{text}</p>}
+      {text && <p className="tw-summarizer-text-gray-500">{text}</p>}
       <input
         type={type}
         value={value}
@@ -59,7 +59,9 @@ export const FormOption = ({
         className="tw-summarizer-border tw-summarizer-p-1 tw-summarizer-w-full"
       />
       {textHelper && (
-        <p className="tw-summarizer-text-sm tw-summarizer-font-medium">{textHelper}</p>
+        <p className="tw-summarizer-text-gray-900 tw-summarizer-text-sm tw-summarizer-font-medium">
+          {textHelper}
+        </p>
       )}
       {error && (
         <p className="tw-summarizer-text-red-500 tw-summarizer-text-sm tw-summarizer-font-medium">
