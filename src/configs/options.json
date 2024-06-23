@@ -16,8 +16,5 @@
   "minWords": {
     "label": "Min Words",
     "type": "number"
-  },
-  "validation": {
-    "empty": "This field is required"
   }
 }

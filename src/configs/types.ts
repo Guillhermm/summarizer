@@ -1,3 +1,10 @@
+export type ConfigForm = {
+  validation: {
+    empty: string;
+    minNumber: string;
+  };
+};
+
 export type ConfigFormOption = {
   label: string;
   placeholder?: string;
@@ -10,9 +17,6 @@ export type ConfigOptions = {
   maxLength: ConfigFormOption;
   minChars: ConfigFormOption;
   minWords: ConfigFormOption;
-  validation: {
-    empty: string;
-  };
 };
 
 export type ConfigPopup = {

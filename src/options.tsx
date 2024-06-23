@@ -10,6 +10,7 @@ import {
   MIN_TEXT_WORDS_ALLOWED,
 } from './utils/constants';
 import { sanitize } from './utils/sanitize';
+import { validateMinValue } from './utils/formValidation';
 
 const Options = () => {
   const { options } = configs;
@@ -47,18 +48,24 @@ const Options = () => {
         {...options.maxLength}
         handleChange={handleChangeMaxLength}
         value={maxLength}
+        min={MAX_SUMMARIZED_TEXT}
+        customValidation={(maxLength) => validateMinValue(maxLength, MAX_SUMMARIZED_TEXT)}
         isRequired
       />
       <FormOption
         {...options.minChars}
         handleChange={handleChangeMinChars}
         value={minChars}
+        min={MIN_TEXT_LENGTH_ALLOWED}
+        customValidation={(minChars) => validateMinValue(minChars, MIN_TEXT_LENGTH_ALLOWED)}
         isRequired
       />
       <FormOption
         {...options.minWords}
         handleChange={handleChangeMinWords}
         value={minWords}
+        min={MIN_TEXT_WORDS_ALLOWED}
+        customValidation={(minWords) => validateMinValue(minWords, MIN_TEXT_WORDS_ALLOWED)}
         isRequired
       />
     </Form>

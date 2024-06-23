@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { configs } from '../configs';
+import { validateEmptyField } from '../utils/formValidation';
 
 export interface FormProps {
+  customValidation?: (value: string) => string | undefined;
   handleChange?: (value: string) => void;
   isRequired?: boolean;
   label: string;
+  min?: number;
   placeholder?: string;
   text?: string;
   type: React.HTMLInputTypeAttribute;
@@ -12,9 +14,11 @@ export interface FormProps {
 }
 
 export const FormOption = ({
-  label,
+  customValidation,
   isRequired = false,
   handleChange,
+  label,
+  min,
   placeholder,
   text,
   type,
@@ -30,10 +34,12 @@ export const FormOption = ({
       const error = validateEmptyField(value);
       setError(error);
     }
-  };
 
-  const validateEmptyField = (value: string) =>
-    value ? undefined : configs.options.validation.empty;
+    if (customValidation) {
+      const error = customValidation(value);
+      setError(error);
+    }
+  };
 
   return (
     <div className="tw-summarizer-flex tw-summarizer-flex-col tw-summarizer-gap-1">
@@ -44,6 +50,7 @@ export const FormOption = ({
       <input
         type={type}
         value={value}
+        min={min}
         onChange={handleChange ? (e) => handleChange(e.target.value) : undefined}
         onBlur={handleBlur}
         placeholder={placeholder ?? label}

@@ -1,0 +1,6 @@
+{
+  "validation": {
+    "empty": "This field is required",
+    "minNumber": "This field requires a minimum value of"
+  }
+}
