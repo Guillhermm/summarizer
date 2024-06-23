@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { validateEmptyField } from '../utils/formValidation';
 
 export interface FormProps {
+  customAsyncValidation?: (value: string) => Promise<string | undefined>;
   customValidation?: (value: string) => string | undefined;
   handleChange?: (value: string) => void;
   isRequired?: boolean;
@@ -15,6 +16,7 @@ export interface FormProps {
 }
 
 export const FormOption = ({
+  customAsyncValidation,
   customValidation,
   isRequired = false,
   handleChange,
@@ -28,12 +30,17 @@ export const FormOption = ({
 }: FormProps) => {
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value } = e.target;
 
     if (isRequired) {
       const error = validateEmptyField(value);
+      setError(error);
+    }
+
+    if (customAsyncValidation) {
+      const error = await customAsyncValidation(value);
       setError(error);
     }
 

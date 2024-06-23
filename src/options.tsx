@@ -10,7 +10,7 @@ import {
   MIN_TEXT_WORDS_ALLOWED,
 } from './utils/constants';
 import { sanitize } from './utils/sanitize';
-import { validateMinValue } from './utils/formValidation';
+import { validateApiKey, validateMinValue } from './utils/formValidation';
 
 const Options = () => {
   const { options } = configs;
@@ -40,7 +40,13 @@ const Options = () => {
   return (
     <Form
       mainOption={
-        <FormOption {...options.apiKey} handleChange={handleChangeKey} value={apiKey} isRequired />
+        <FormOption
+          {...options.apiKey}
+          handleChange={handleChangeKey}
+          value={apiKey}
+          customAsyncValidation={(apiKey) => validateApiKey(apiKey)}
+          isRequired
+        />
       }
       saveSettings={saveSettings}
     >

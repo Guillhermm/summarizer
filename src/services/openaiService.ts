@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AIServiceResponse } from './types';
 
 const getOpenAIApiKey = async (): Promise<string> => {
   return new Promise((resolve) => {
@@ -8,10 +9,14 @@ const getOpenAIApiKey = async (): Promise<string> => {
   });
 };
 
-export const getOpenAIResponse = async (content: string, maxLength?: number): Promise<string> => {
+export const getOpenAIResponse = async (params: {
+  content: string;
+  maxLength?: number;
+  apiKey?: string;
+}): Promise<AIServiceResponse> => {
+  const { content, maxLength, apiKey } = params;
   const url = 'https://api.openai.com/v1/chat/completions';
-  const key = await getOpenAIApiKey();
-  console.log('key', key);
+  const key = apiKey ?? (await getOpenAIApiKey());
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${key}`,
@@ -19,7 +24,7 @@ export const getOpenAIResponse = async (content: string, maxLength?: number): Pr
 
   const data = {
     model: 'gpt-3.5-turbo',
-    max_tokens: maxLength ?? undefined,
+    max_tokens: maxLength,
     messages: [
       {
         role: 'user',
@@ -30,12 +35,15 @@ export const getOpenAIResponse = async (content: string, maxLength?: number): Pr
 
   try {
     const response = await axios.post(url, data, { headers });
-    return response.data.choices[0].message.content || '';
+    return {
+      text: response.data.choices[0].message.content || '',
+    };
   } catch (error) {
     console.error(error);
   }
 
-  return `
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-  `;
+  return {
+    text: 'There was an error with the request. Please, check your API Key.',
+    hasError: true,
+  };
 };

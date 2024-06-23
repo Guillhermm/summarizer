@@ -18,7 +18,13 @@ export const summarizeText = async (
   // but this is okay for a free project.
   switch (service) {
     case 'openai':
-      return getOpenAIResponse(content);
+      const response = await getOpenAIResponse({ content });
+
+      if (response?.hasError) {
+        return 'Text could not be summarized. Please, check your API Key.';
+      }
+
+      return response.text;
     default:
       throw new Error('Unsupported service');
   }
