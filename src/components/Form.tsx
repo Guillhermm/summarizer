@@ -18,7 +18,10 @@ export const Form = ({ children, mainOption, saveSettings }: FormProps) => (
           AI capabilities to provide a way to save you time when reading any kind of long texts.
           <br />
           The version 1.0 exclusively relies on{' '}
-          <Link href="https://openai.com/api/">OpenAI API</Link> to work, based on model{' '}
+          <Link href="https://openai.com/api/" target="_blank">
+            OpenAI API
+          </Link>{' '}
+          to work, based on model{' '}
           <Link
             href="https://platform.openai.com/docs/models/gpt-3-5-turbo"
             target="_blank"
