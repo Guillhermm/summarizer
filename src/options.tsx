@@ -9,6 +9,7 @@ import {
   MIN_TEXT_LENGTH_ALLOWED,
   MIN_TEXT_WORDS_ALLOWED,
 } from './utils/constants';
+import { sanitize } from './utils/sanitize';
 
 const Options = () => {
   const { options } = configs;
@@ -30,7 +31,7 @@ const Options = () => {
     chrome.storage.sync.set({ apiKey, maxLength, minWords, minChars });
   };
 
-  const handleChangeKey = (value: string) => setApiKey(value);
+  const handleChangeKey = (value: string) => setApiKey(sanitize(value));
   const handleChangeMaxLength = (value: string) => setMaxLength(Number(value));
   const handleChangeMinChars = (value: string) => setMinChars(Number(value));
   const handleChangeMinWords = (value: string) => setMinWords(Number(value));
