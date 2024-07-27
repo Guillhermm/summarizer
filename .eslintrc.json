@@ -20,7 +20,8 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "no-case-declarations": "off"
   },
   "overrides": [
     {
