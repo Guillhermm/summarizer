@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Form } from './components/Form';
-import { FormOption } from './components/FormOption';
+import { Form, FormOption, FormOptionsAdditional, FormOptionsMain, FormSubmit } from './components/Form';
 import { ShadowRoot } from './components/ShadowRoot';
 import { configs } from './configs';
 import {
@@ -18,6 +17,8 @@ const Options = () => {
   const [maxLength, setMaxLength] = useState<number>(MAX_SUMMARIZED_TEXT);
   const [minChars, setMinChars] = useState<number>(MIN_TEXT_LENGTH_ALLOWED);
   const [minWords, setMinWords] = useState<number>(MIN_TEXT_WORDS_ALLOWED);
+  // Starts with true because API Key is initial empty.
+  const [formHasErrors, setFormHasErrors] = useState<boolean>(true);
 
   useEffect(() => {
     chrome.storage.sync.get(['apiKey', 'maxLength', 'minChars', 'minWords'], (result) => {
@@ -38,42 +39,47 @@ const Options = () => {
   const handleChangeMinWords = (value: string) => setMinWords(Number(value));
 
   return (
-    <Form
-      mainOption={
+    <Form>
+      <FormOptionsMain>
         <FormOption
-          {...options.apiKey}
-          handleChange={handleChangeKey}
-          value={apiKey}
-          customAsyncValidation={(apiKey) => validateApiKey(apiKey)}
+            {...options.apiKey}
+            handleChange={handleChangeKey}
+            value={apiKey}
+            customAsyncValidation={(apiKey) => validateApiKey(apiKey)}
+            setFormHasErrors={setFormHasErrors}
+            isRequired
+          />  
+      </FormOptionsMain>
+      <FormOptionsAdditional>
+        <FormOption
+          {...options.maxLength}
+          handleChange={handleChangeMaxLength}
+          value={maxLength}
+          min={MAX_SUMMARIZED_TEXT}
+          customValidation={(maxLength) => validateMinValue(maxLength, MAX_SUMMARIZED_TEXT)}
+          setFormHasErrors={setFormHasErrors}
           isRequired
         />
-      }
-      saveSettings={saveSettings}
-    >
-      <FormOption
-        {...options.maxLength}
-        handleChange={handleChangeMaxLength}
-        value={maxLength}
-        min={MAX_SUMMARIZED_TEXT}
-        customValidation={(maxLength) => validateMinValue(maxLength, MAX_SUMMARIZED_TEXT)}
-        isRequired
-      />
-      <FormOption
-        {...options.minChars}
-        handleChange={handleChangeMinChars}
-        value={minChars}
-        min={MIN_TEXT_LENGTH_ALLOWED}
-        customValidation={(minChars) => validateMinValue(minChars, MIN_TEXT_LENGTH_ALLOWED)}
-        isRequired
-      />
-      <FormOption
-        {...options.minWords}
-        handleChange={handleChangeMinWords}
-        value={minWords}
-        min={MIN_TEXT_WORDS_ALLOWED}
-        customValidation={(minWords) => validateMinValue(minWords, MIN_TEXT_WORDS_ALLOWED)}
-        isRequired
-      />
+        <FormOption
+          {...options.minChars}
+          handleChange={handleChangeMinChars}
+          value={minChars}
+          min={MIN_TEXT_LENGTH_ALLOWED}
+          customValidation={(minChars) => validateMinValue(minChars, MIN_TEXT_LENGTH_ALLOWED)}
+          setFormHasErrors={setFormHasErrors}
+          isRequired
+        />
+        <FormOption
+          {...options.minWords}
+          handleChange={handleChangeMinWords}
+          value={minWords}
+          min={MIN_TEXT_WORDS_ALLOWED}
+          customValidation={(minWords) => validateMinValue(minWords, MIN_TEXT_WORDS_ALLOWED)}
+          setFormHasErrors={setFormHasErrors}
+          isRequired
+        />
+      </FormOptionsAdditional>
+      <FormSubmit disabled={formHasErrors} saveSettings={saveSettings} />
     </Form>
   );
 };

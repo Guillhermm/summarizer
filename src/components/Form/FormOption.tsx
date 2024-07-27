@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { validateEmptyField } from '../utils/formValidation';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { validateEmptyField } from '../../utils/formValidation';
 
-export interface FormProps {
+export interface FormOptionProps {
   customAsyncValidation?: (value: string) => Promise<string | undefined>;
   customValidation?: (value: string) => string | undefined;
   handleChange?: (value: string) => void;
@@ -9,6 +9,7 @@ export interface FormProps {
   label: string;
   min?: number;
   placeholder?: string;
+  setFormHasErrors?: Dispatch<SetStateAction<boolean>>;
   text?: string;
   textHelper?: string;
   type: React.HTMLInputTypeAttribute;
@@ -18,36 +19,41 @@ export interface FormProps {
 export const FormOption = ({
   customAsyncValidation,
   customValidation,
-  isRequired = false,
   handleChange,
+  isRequired = false,
   label,
   min,
   placeholder,
+  setFormHasErrors,
   text,
   textHelper,
   type,
   value,
-}: FormProps) => {
+}: FormOptionProps) => {
   const [error, setError] = useState<string | undefined>(undefined);
 
   const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value } = e.target;
+    let error: string | undefined;
 
     if (isRequired) {
-      const error = validateEmptyField(value);
-      setError(error);
+      error = validateEmptyField(value);
     }
 
     if (customAsyncValidation) {
-      const error = await customAsyncValidation(value);
-      setError(error);
+      error = await customAsyncValidation(value);
     }
 
     if (customValidation) {
-      const error = customValidation(value);
-      setError(error);
+      error = customValidation(value);
     }
+
+    if (setFormHasErrors) {
+      setFormHasErrors(Boolean(error));
+    }
+
+    setError(error);
   };
 
   return (

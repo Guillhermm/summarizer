@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Form } from '../components/Form';
-import { FormOption } from '../components/FormOption';
+import { Form, FormOption, FormOptionsAdditional, FormOptionsMain, FormSubmit } from '../components/Form';
 import { configs } from '../configs';
 import {
   MAX_SUMMARIZED_TEXT,
@@ -23,32 +22,31 @@ const PreviewOptions = () => {
   const handleChangeMinWords = (value: string) => setMinWords(Number(value));
 
   const Options = () => (
-    <Form
-      mainOption={
+    <Form>
+      <FormOptionsMain>
         <FormOption {...options.apiKey} handleChange={handleChangeKey} value={apiKey} isRequired />
-      }
-      saveSettings={() => {
-        return;
-      }}
-    >
-      <FormOption
-        {...options.maxLength}
-        handleChange={handleChangeMaxLength}
-        value={maxLength}
-        isRequired
-      />
-      <FormOption
-        {...options.minChars}
-        handleChange={handleChangeMinChars}
-        value={minChars}
-        isRequired
-      />
-      <FormOption
-        {...options.minWords}
-        handleChange={handleChangeMinWords}
-        value={minWords}
-        isRequired
-      />
+      </FormOptionsMain>
+      <FormOptionsAdditional>
+        <FormOption
+          {...options.maxLength}
+          handleChange={handleChangeMaxLength}
+          value={maxLength}
+          isRequired
+        />
+        <FormOption
+          {...options.minChars}
+          handleChange={handleChangeMinChars}
+          value={minChars}
+          isRequired
+        />
+        <FormOption
+          {...options.minWords}
+          handleChange={handleChangeMinWords}
+          value={minWords}
+          isRequired
+        />
+      </FormOptionsAdditional>
+      <FormSubmit />
     </Form>
   );
 
