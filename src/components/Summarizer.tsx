@@ -48,12 +48,6 @@ export const Summarizer = ({
         // Prevents summarizer modal to also be hovered.
         !document.getElementById('summarizer-modal')
       ) {
-        console.log('tag', target.tagName);
-        console.log('text', target.textContent);
-        console.log('length', target.textContent.length);
-        console.log('words', target.textContent.split(/\s+/).filter(Boolean).length);
-        console.log('min lenght allowed', minChars);
-        console.log('min words allowed', minWords);
         setHoveredElement(target);
         target.classList.add('summarizer-hovered');
       }
