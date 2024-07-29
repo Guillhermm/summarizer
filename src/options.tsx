@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Form, FormOption, FormOptionsAdditional, FormOptionsMain, FormSubmit } from './components/Form';
+import {
+  Form,
+  FormOption,
+  FormOptionsAdditional,
+  FormOptionsMain,
+  FormSubmit,
+} from './components/Form';
 import { ShadowRoot } from './components/ShadowRoot';
 import { configs } from './configs';
 import {
@@ -42,13 +48,13 @@ const Options = () => {
     <Form>
       <FormOptionsMain>
         <FormOption
-            {...options.apiKey}
-            handleChange={handleChangeKey}
-            value={apiKey}
-            customAsyncValidation={(apiKey) => validateApiKey(apiKey)}
-            setFormHasErrors={setFormHasErrors}
-            isRequired
-          />  
+          {...options.apiKey}
+          handleChange={handleChangeKey}
+          value={apiKey}
+          customAsyncValidation={(apiKey) => validateApiKey(apiKey)}
+          setFormHasErrors={setFormHasErrors}
+          isRequired
+        />
       </FormOptionsMain>
       <FormOptionsAdditional>
         <FormOption

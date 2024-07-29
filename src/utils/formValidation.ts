@@ -27,4 +27,6 @@ export const validateEmptyField = (value: string): FormValidationProps =>
   value ? { error: false } : { error: true, message: configs.form.validation.empty };
 
 export const validateMinValue = (value: string, min: number): FormValidationProps =>
-  Number(value) >= min ? { error: false } : { error: true, message: `${configs.form.validation.minNumber} ${min}` };
+  Number(value) >= min
+    ? { error: false }
+    : { error: true, message: `${configs.form.validation.minNumber} ${min}` };

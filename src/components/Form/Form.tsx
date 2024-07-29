@@ -6,8 +6,6 @@ export interface FormProps {
 
 export const Form = ({ children }: FormProps) => (
   <div className="tw-summarizer-overflow-y-auto">
-    <div className="tw-summarizer-divide-y">
-      {children}
-    </div>
+    <div className="tw-summarizer-divide-y">{children}</div>
   </div>
 );

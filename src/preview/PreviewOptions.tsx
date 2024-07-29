@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Form, FormOption, FormOptionsAdditional, FormOptionsMain, FormSubmit } from '../components/Form';
+import {
+  Form,
+  FormOption,
+  FormOptionsAdditional,
+  FormOptionsMain,
+  FormSubmit,
+} from '../components/Form';
 import { configs } from '../configs';
 import {
   MAX_SUMMARIZED_TEXT,

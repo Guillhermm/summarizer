@@ -42,7 +42,7 @@ export const FormOption = ({
       v.push(validation);
     }
 
-    // For empty values in required fields, required validation should be enough so 
+    // For empty values in required fields, required validation should be enough so
     // we don't need to run additional validation.
     // But... if field not required, custom validation is all that's left.
     if (value || !isRequired) {
@@ -50,7 +50,7 @@ export const FormOption = ({
         const validation = await customAsyncValidation(value);
         v.push(validation);
       }
-  
+
       if (customValidation) {
         const validation = customValidation(value);
         v.push(validation);
@@ -61,7 +61,7 @@ export const FormOption = ({
 
     if (setFormHasErrors) {
       // Gets only failed validations to inform form.
-      const errors = v.filter(validation => validation.error);
+      const errors = v.filter((validation) => validation.error);
       setFormHasErrors(errors.length > 0);
     }
   };
@@ -86,13 +86,18 @@ export const FormOption = ({
           {textHelper}
         </p>
       )}
-      {validations && validations.map(({ error, message }, idx) => (
-        message && (
-          <p className={`tw-summarizer-text-sm tw-summarizer-font-medium ${error ? 'tw-summarizer-text-red-500' : 'tw-summarizer-text-green-700'}`} key={idx}>
-            {message}
-          </p>
-        )
-      ))}
+      {validations &&
+        validations.map(
+          ({ error, message }, idx) =>
+            message && (
+              <p
+                className={`tw-summarizer-text-sm tw-summarizer-font-medium ${error ? 'tw-summarizer-text-red-500' : 'tw-summarizer-text-green-700'}`}
+                key={idx}
+              >
+                {message}
+              </p>
+            )
+        )}
     </div>
   );
 };

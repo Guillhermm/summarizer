@@ -14,8 +14,8 @@ export const FormOptionsAdditional = ({ children }: FormOptionsAdditionalProps) 
       <AccordionBody>
         <p className="tw-summarizer-pt-2">
           These settings determine how the extension is going to work for you. Since they can{' '}
-          <strong>not</strong> be empty, there will be predefined values, carefully chosen, but
-          you can change them according to your needs.
+          <strong>not</strong> be empty, there will be predefined values, carefully chosen, but you
+          can change them according to your needs.
         </p>
         {children}
       </AccordionBody>
