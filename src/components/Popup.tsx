@@ -17,9 +17,7 @@ export const Popup = ({
     <div className="tw-summarizer-px-4 tw-summarizer-py-2">
       <div className="tw-summarizer-text-lg tw-summarizer-font-bold tw-summarizer-flex tw-summarizer-items-center tw-summarizer-gap-2">
         <IconSummarizer className="tw-summarizer-w-6 tw-summarizer-h-6" />
-        <span>
-          {configs.popup.name}
-        </span>
+        <span>{configs.popup.name}</span>
       </div>
     </div>
     <div className="tw-summarizer-px-4 tw-summarizer-py-2">

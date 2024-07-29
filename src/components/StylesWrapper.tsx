@@ -10,7 +10,5 @@ interface StylesWrapperProps {
  * don't bleed out to the parent page.
  */
 export const StylesWrapper = ({ children }: StylesWrapperProps) => (
-  <div className="summarizer">
-    {children}
-  </div>
+  <div className="summarizer">{children}</div>
 );

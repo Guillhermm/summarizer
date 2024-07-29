@@ -12,7 +12,10 @@ interface ModalProps {
 export const Modal = ({ onClose, summarizedText }: ModalProps) => {
   return ReactDOM.createPortal(
     <StylesWrapper>
-      <div id="summarizer-modal" className="tw-summarizer-fixed tw-summarizer-inset-0 tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-bg-black tw-summarizer-bg-opacity-10 tw-summarizer-z-[99999]">
+      <div
+        id="summarizer-modal"
+        className="tw-summarizer-fixed tw-summarizer-inset-0 tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-bg-black tw-summarizer-bg-opacity-10 tw-summarizer-z-[99999]"
+      >
         <div className="tw-summarizer-relative tw-summarizer-bg-white tw-summarizer-p-6 tw-summarizer-rounded-lg tw-summarizer-shadow-xl tw-summarizer-w-1/2 tw-summarizer-h-auto">
           <button
             className="!tw-summarizer-leading-none !tw-summarizer-m-3 !tw-summarizer-p-1 tw-summarizer-absolute tw-summarizer-top-0 tw-summarizer-right-0 tw-summarizer-rounded-full tw-summarizer-cursor-pointer"
