@@ -71,7 +71,7 @@ export const FormOption = ({
       <label className="tw-summarizer-font-bold">
         {label} {isRequired && <span className="tw-summarizer-text-red-500">*</span>}
       </label>
-      {text && <p className="tw-summarizer-text-gray-500">{text}</p>}
+      {text && <span className="tw-summarizer-text-gray-500">{text}</span>}
       <input
         type={type}
         value={value}
@@ -79,23 +79,23 @@ export const FormOption = ({
         onChange={handleChange ? (e) => handleChange(e.target.value) : undefined}
         onBlur={handleBlur}
         placeholder={placeholder ?? label}
-        className="tw-summarizer-border tw-summarizer-p-1 tw-summarizer-w-full"
+        className="!tw-summarizer-p-1 tw-summarizer-border tw-summarizer-w-full"
       />
       {textHelper && (
-        <p className="tw-summarizer-text-gray-900 tw-summarizer-text-sm tw-summarizer-font-medium">
+        <span className="tw-summarizer-text-gray-900 tw-summarizer-text-sm tw-summarizer-font-medium">
           {textHelper}
-        </p>
+        </span>
       )}
       {validations &&
         validations.map(
           ({ error, message }, idx) =>
             message && (
-              <p
+              <span
                 className={`tw-summarizer-text-sm tw-summarizer-font-medium ${error ? 'tw-summarizer-text-red-500' : 'tw-summarizer-text-green-700'}`}
                 key={idx}
               >
                 {message}
-              </p>
+              </span>
             )
         )}
     </div>

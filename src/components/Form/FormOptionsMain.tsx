@@ -6,8 +6,8 @@ export interface FormOptionsMainProps {
 }
 
 export const FormOptionsMain = ({ children }: FormOptionsMainProps) => (
-  <div className="tw-summarizer-px-4 tw-summarizer-pb-4 tw-summarizer-flex tw-summarizer-flex-col tw-summarizer-gap-4">
-    <p>
+  <div className="!tw-summarizer-px-4 tw-summarizer-pb-4 tw-summarizer-flex tw-summarizer-flex-col tw-summarizer-gap-4">
+    <div>
       Designed for Chrome, this browser extension is a helper utility that leverages generative AI
       capabilities to provide a way to save you time when reading any kind of long texts.
       <br />
@@ -24,7 +24,7 @@ export const FormOptionsMain = ({ children }: FormOptionsMainProps) => (
         GPT-3.5 Turbo
       </Link>
       . Other generative AIs like Gemini, from Google, might be supported in future versions.
-    </p>
+    </div>
     <div>
       v1.0.0 •{' '}
       <Link href="https://github.com/Guillhermm/summarizer" target="_blank" rel="noreferrer">

@@ -8,6 +8,9 @@ module.exports = {
   variants: {
     extend: {},
   },
+  corePlugins: {
+    preflight: false,
+  },
   plugins: [],
   prefix: 'tw-summarizer-',
 };

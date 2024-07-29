@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  @import url('./preflight.css');
+}
+
 @layer components {
   .summarizer-hovered {
     outline: 3px dashed #5ea9ea;

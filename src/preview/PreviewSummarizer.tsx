@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Summarizer } from '../components/Summarizer';
-import '../styles/index.css';
+import '../styles/main.css';
 
 const originalTexts: string[] = [
   `

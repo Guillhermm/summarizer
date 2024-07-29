@@ -12,7 +12,7 @@ export const AccordionTrigger = ({ children }: AccordionTriggerProps) => {
   return (
     <button
       onClick={toggleOpen}
-      className="tw-summarizer-w-full tw-summarizer-flex tw-summarizer-justify-between tw-summarizer-items-center focus:tw-summarizer-outline-none"
+      className="tw-summarizer-p-4 tw-summarizer-cursor-pointer tw-summarizer-w-full tw-summarizer-flex tw-summarizer-justify-between tw-summarizer-items-center focus:tw-summarizer-outline-none"
     >
       {children}
       <IconArrowDown

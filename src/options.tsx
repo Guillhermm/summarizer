@@ -7,7 +7,7 @@ import {
   FormOptionsMain,
   FormSubmit,
 } from './components/Form';
-import { ShadowRoot } from './components/ShadowRoot';
+import { StylesWrapper } from './components/StylesWrapper';
 import { configs } from './configs';
 import {
   MAX_SUMMARIZED_TEXT,
@@ -96,9 +96,9 @@ if (container) {
   const root = createRoot(container);
   root.render(
     <React.StrictMode>
-      <ShadowRoot>
+      <StylesWrapper>
         <Options />
-      </ShadowRoot>
+      </StylesWrapper>
     </React.StrictMode>
   );
 }

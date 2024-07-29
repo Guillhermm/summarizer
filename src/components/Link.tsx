@@ -16,7 +16,7 @@ export const Link = ({ href, className, children, ...rest }: LinkProps) => (
     href={href}
     className={classnames(
       className,
-      'tw-summarizer-underline tw-summarizer-font-medium tw-summarizer-text-blue-500 hover:tw-summarizer-text-blue-600'
+      'tw-summarizer-font-medium !tw-summarizer-underline !tw-summarizer-text-blue-500 hover:!tw-summarizer-text-blue-600'
     )}
     {...rest}
   >

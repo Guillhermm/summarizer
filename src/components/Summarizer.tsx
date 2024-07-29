@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Button } from './Button';
 import { IconSummarizer } from './Icons';
 import { Modal } from './Modal';
+import { StylesWrapper } from './StylesWrapper';
 import { summarizeText } from '../services/summaryService';
 import {
   MAX_SUMMARIZED_TEXT,
@@ -45,7 +46,7 @@ export const Summarizer = ({
         // Min words allowed (to be in options).
         target.textContent.split(/\s+/).filter(Boolean).length > minWords &&
         // Prevents summarizer modal to also be hovered.
-        document.getElementsByClassName('summarizer-modal').length === 0
+        !document.getElementById('summarizer-modal')
       ) {
         console.log('tag', target.tagName);
         console.log('text', target.textContent);
@@ -101,14 +102,16 @@ export const Summarizer = ({
       <>
         {hoveredElement &&
           ReactDOM.createPortal(
-            <Button
-              className="tw-summarizer-absolute tw-summarizer-right-4 tw-summarizer-bottom-4 tw-summarizer-rounded-[50%] tw-summarizer-z-[9999] tw-summarizer-transition hover:tw-summarizer-scale-110"
-              onClick={() => {
-                handleSummarizerClick();
-              }}
-            >
-              <IconSummarizer className="tw-summarizer-w-6 tw-summarizer-h-6 tw-summarizer-text-white" />
-            </Button>,
+            <StylesWrapper>
+              <Button
+                className="!tw-summarizer-leading-none !tw-summarizer-rounded-[50%] tw-summarizer-absolute tw-summarizer-right-4 tw-summarizer-bottom-4 tw-summarizer-z-[9999] tw-summarizer-transition hover:tw-summarizer-scale-110"
+                onClick={() => {
+                  handleSummarizerClick();
+                }}
+              >
+                <IconSummarizer className="tw-summarizer-w-6 tw-summarizer-h-6 tw-summarizer-text-white" />
+              </Button>
+            </StylesWrapper>,
             // Appends button to the hovered element.
             hoveredElement
           )}
