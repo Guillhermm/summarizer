@@ -9,7 +9,7 @@ export type FormValidationProps = {
 export const validateApiKey = async (value: string): Promise<FormValidationProps> => {
   const validation: FormValidationProps = {
     error: false,
-    message: 'API Key has been validated',
+    message: configs.form.validation.apiValid,
   };
 
   const content = 'This is just a test to validate API key.';
@@ -17,7 +17,7 @@ export const validateApiKey = async (value: string): Promise<FormValidationProps
 
   if (response?.hasError) {
     validation.error = true;
-    validation.message = 'API Key is invalid';
+    validation.message = configs.form.validation.apiInvalid;
   }
 
   return validation;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '../Button';
+import { configs } from '../../configs';
 
 export interface FormSubmitProps {
   disabled?: boolean;
@@ -13,7 +14,7 @@ export const FormSubmit = ({ disabled, saveSettings }: FormSubmitProps) => (
       className="tw-summarizer-w-32 tw-summarizer-px-4 tw-summarizer-py-2 tw-summarizer-font-medium disabled:tw-summarizer-opacity-75 disabled:tw-summarizer-pointer-events-none"
       disabled={disabled}
     >
-      Save
+      {configs.form.submit.label}
     </Button>
   </div>
 );

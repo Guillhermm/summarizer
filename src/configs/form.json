@@ -1,5 +1,10 @@
 {
+  "submit": {
+    "label": "Save"
+  },
   "validation": {
+    "apiInvalid": "API Key is invalid",
+    "apiValid": "API Key has been validated",
     "empty": "This field is required",
     "minNumber": "This field requires a minimum value of"
   }

@@ -1,5 +1,10 @@
 export type ConfigForm = {
+  submit: {
+    label: string;
+  };
   validation: {
+    apiInvalid: string;
+    apiValid: string;
     empty: string;
     minNumber: string;
   };
@@ -18,6 +23,10 @@ export type ConfigOptions = {
   maxLength: ConfigFormOption;
   minChars: ConfigFormOption;
   minWords: ConfigFormOption;
+};
+
+export type ConfigModal = {
+  name: string;
 };
 
 export type ConfigPopup = {

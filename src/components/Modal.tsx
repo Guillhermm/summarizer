@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { IconClose } from './Icons';
+import { configs } from '../configs';
 
 interface ModalProps {
   onClose: () => void;
@@ -19,7 +20,7 @@ export const Modal = ({ onClose, summarizedText }: ModalProps) => {
         </button>
         <div className="modal-body">
           <h1 className="tw-summarizer-text-xl tw-summarizer-font-bold tw-summarizer-mb-4">
-            Summarizer
+            {configs.modal.name}
           </h1>
           <div className="tw-summarizer-p-4 tw-summarizer-border tw-summarizer-border-gray-300 tw-summarizer-rounded-lg">
             {summarizedText}
