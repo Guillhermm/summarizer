@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-import { validateEmptyField } from '../../utils/formValidation';
+import { FormValidationProps, validateEmptyField } from '../../utils/formValidation';
 
 export interface FormOptionProps {
-  customAsyncValidation?: (value: string) => Promise<string | undefined>;
-  customValidation?: (value: string) => string | undefined;
+  customAsyncValidation?: (value: string) => Promise<FormValidationProps>;
+  customValidation?: (value: string) => FormValidationProps;
   handleChange?: (value: string) => void;
   isRequired?: boolean;
   label: string;
@@ -30,30 +30,40 @@ export const FormOption = ({
   type,
   value,
 }: FormOptionProps) => {
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [validations, setValidations] = useState<FormValidationProps[]>([]);
 
   const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value } = e.target;
-    let error: string | undefined;
+    const v: FormValidationProps[] = [];
 
     if (isRequired) {
-      error = validateEmptyField(value);
+      const validation = validateEmptyField(value);
+      v.push(validation);
     }
 
-    if (customAsyncValidation) {
-      error = await customAsyncValidation(value);
+    // For empty values in required fields, required validation should be enough so 
+    // we don't need to run additional validation.
+    // But... if field not required, custom validation is all that's left.
+    if (value || !isRequired) {
+      if (customAsyncValidation) {
+        const validation = await customAsyncValidation(value);
+        v.push(validation);
+      }
+  
+      if (customValidation) {
+        const validation = customValidation(value);
+        v.push(validation);
+      }
     }
 
-    if (customValidation) {
-      error = customValidation(value);
-    }
+    setValidations(v);
 
     if (setFormHasErrors) {
-      setFormHasErrors(Boolean(error));
+      // Gets only failed validations to inform form.
+      const errors = v.filter(validation => validation.error);
+      setFormHasErrors(errors.length > 0);
     }
-
-    setError(error);
   };
 
   return (
@@ -76,11 +86,13 @@ export const FormOption = ({
           {textHelper}
         </p>
       )}
-      {error && (
-        <p className="tw-summarizer-text-red-500 tw-summarizer-text-sm tw-summarizer-font-medium">
-          {error}
-        </p>
-      )}
+      {validations && validations.map(({ error, message }, idx) => (
+        message && (
+          <p className={`tw-summarizer-text-sm tw-summarizer-font-medium ${error ? 'tw-summarizer-text-red-500' : 'tw-summarizer-text-green-700'}`} key={idx}>
+            {message}
+          </p>
+        )
+      ))}
     </div>
   );
 };
