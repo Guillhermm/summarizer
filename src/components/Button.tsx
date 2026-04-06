@@ -11,7 +11,7 @@ interface ButtonProps {
 export const Button = ({ children, className, disabled, onClick }: ButtonProps) => (
   <button
     className={classnames(
-      '!tw-summarizer-p-2 !tw-summarizer-bg-blue-500 !tw-summarizer-text-white !tw-summarizer-rounded tw-summarizer-cursor-pointer hover:!tw-summarizer-bg-blue-600',
+      'tw-summarizer-px-4 tw-summarizer-py-2 tw-summarizer-bg-indigo-500 tw-summarizer-text-white tw-summarizer-text-sm tw-summarizer-font-medium tw-summarizer-rounded-lg tw-summarizer-cursor-pointer hover:tw-summarizer-bg-indigo-600 tw-summarizer-transition-colors',
       className
     )}
     disabled={disabled}

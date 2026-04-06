@@ -5,10 +5,11 @@
     "jsx": "react",
     "lib": ["dom", "es2020"],
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noImplicitAny": true,
     "outDir": "./dist",
     "resolveJsonModule": true,
+    "rootDir": "./src",
     "skipLibCheck": true,
     "strict": true,
     "target": "es6"

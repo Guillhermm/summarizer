@@ -5,13 +5,19 @@ import { getChromeAITriage } from './chromeAIService';
 
 const MAX_TRIAGE_CHARS = 12000;
 
-const CONTENT_TYPES: ContentType[] = ['news', 'opinion', 'research', 'tutorial', 'marketing', 'other'];
+const CONTENT_TYPES: ContentType[] = [
+  'news',
+  'opinion',
+  'research',
+  'tutorial',
+  'marketing',
+  'other',
+];
 const KNOWLEDGE_LEVELS: KnowledgeLevel[] = ['casual', 'technical', 'academic'];
 const VERDICTS: Verdict[] = ['recommended', 'optional', 'skip'];
 
 const buildPrompt = (text: string, language: string): string => {
-  const truncated =
-    text.length > MAX_TRIAGE_CHARS ? text.slice(0, MAX_TRIAGE_CHARS) + '...' : text;
+  const truncated = text.length > MAX_TRIAGE_CHARS ? text.slice(0, MAX_TRIAGE_CHARS) + '...' : text;
 
   return `Analyze this article and return ONLY a JSON object with these exact fields:
 {
@@ -57,9 +63,20 @@ const getProviderSettings = (): Promise<{
 }> =>
   new Promise((resolve) => {
     chrome.storage.sync.get(
-      ['provider', 'language', 'openaiKey', 'openaiModel', 'claudeKey', 'claudeModel', 'geminiKey', 'geminiModel', 'deepseekKey', 'deepseekModel'],
+      [
+        'provider',
+        'language',
+        'openaiKey',
+        'openaiModel',
+        'claudeKey',
+        'claudeModel',
+        'geminiKey',
+        'geminiModel',
+        'deepseekKey',
+        'deepseekModel',
+      ],
       (result) => {
-        const provider = (result.provider as ProviderId) || 'openai';
+        const provider = (result.provider as ProviderId) || 'chrome-ai';
         const language = (result.language as string) || 'en-US';
 
         if (provider === 'chrome-ai') {
@@ -67,7 +84,8 @@ const getProviderSettings = (): Promise<{
         }
 
         const model =
-          result[`${provider}Model`] || DEFAULT_MODELS[provider as Exclude<ProviderId, 'chrome-ai'>];
+          result[`${provider}Model`] ||
+          DEFAULT_MODELS[provider as Exclude<ProviderId, 'chrome-ai'>];
         const apiKey = result[`${provider}Key`] || '';
 
         resolve({ provider, model, apiKey, language });
@@ -79,13 +97,11 @@ export const triagePage = async (text: string): Promise<TriageResult> => {
   const { provider, model, apiKey, language } = await getProviderSettings();
 
   if (provider === 'chrome-ai') {
-    return getChromeAITriage(text);
+    return getChromeAITriage(text, language);
   }
 
   if (!apiKey) {
-    throw new Error(
-      `No API key set for ${provider}. Add one in the extension options.`
-    );
+    throw new Error(`No API key set for ${provider}. Add one in the extension options.`);
   }
 
   const prompt = buildPrompt(text, language);

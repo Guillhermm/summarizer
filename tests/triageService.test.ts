@@ -42,12 +42,14 @@ describe('parseTriageResponse', () => {
   });
 
   it('throws on missing argument field', () => {
-    const { argument: _arg, ...noArgument } = valid;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { argument, ...noArgument } = valid;
     expect(() => parseTriageResponse(JSON.stringify(noArgument))).toThrow();
   });
 
   it('throws on missing verdict field', () => {
-    const { verdict: _v, ...noVerdict } = valid;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { verdict, ...noVerdict } = valid;
     expect(() => parseTriageResponse(JSON.stringify(noVerdict))).toThrow();
   });
 

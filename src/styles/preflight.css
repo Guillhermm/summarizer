@@ -6,20 +6,12 @@
  *
  * @see https://unpkg.com/tailwindcss@3.4.3/src/css/preflight.css.
  */
-.summarizer {
+:where(.summarizer) {
   -webkit-text-size-adjust: 100%;
   -moz-tab-size: 4;
   tab-size: 4;
-  font-family: theme(
-    'fontFamily.sans',
-    ui-sans-serif,
-    system-ui,
-    sans-serif,
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    'Noto Color Emoji'
-  );
+  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
   font-feature-settings: normal;
   font-variation-settings: normal;
   -webkit-tap-highlight-color: transparent;
@@ -31,7 +23,7 @@
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
-    border-color: theme('borderColor.DEFAULT', currentColor);
+    border-color: currentColor;
   }
 
   ::before,
@@ -73,17 +65,8 @@
   kbd,
   samp,
   pre {
-    font-family: theme(
-      'fontFamily.mono',
-      ui-monospace,
-      SFMono-Regular,
-      Menlo,
-      Monaco,
-      Consolas,
-      'Liberation Mono',
-      'Courier New',
-      monospace
-    );
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
     font-feature-settings: normal;
     font-variation-settings: normal;
     font-size: 1em;
@@ -221,7 +204,7 @@
   input::placeholder,
   textarea::placeholder {
     opacity: 1;
-    color: theme('colors.gray.400', #9ca3af);
+    color: #9ca3af;
   }
 
   button,

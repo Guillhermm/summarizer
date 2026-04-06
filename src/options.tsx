@@ -41,10 +41,10 @@ const ProviderTab = ({
 }) => (
   <button
     onClick={onClick}
-    className={`tw-summarizer-px-3 tw-summarizer-py-1.5 tw-summarizer-text-sm tw-summarizer-rounded-md tw-summarizer-font-medium tw-summarizer-transition-colors tw-summarizer-cursor-pointer ${
+    className={`tw-summarizer-px-2 tw-summarizer-py-1.5 tw-summarizer-text-sm tw-summarizer-rounded-md tw-summarizer-font-medium tw-summarizer-transition-colors tw-summarizer-cursor-pointer tw-summarizer-border ${
       active
-        ? 'tw-summarizer-bg-indigo-500 tw-summarizer-text-white'
-        : 'tw-summarizer-text-gray-500 hover:tw-summarizer-text-gray-700 hover:tw-summarizer-bg-gray-100'
+        ? 'tw-summarizer-bg-indigo-500 tw-summarizer-text-white tw-summarizer-border-indigo-600 tw-summarizer-shadow-sm'
+        : 'tw-summarizer-bg-white tw-summarizer-text-gray-600 tw-summarizer-border-gray-300 hover:tw-summarizer-border-indigo-300 hover:tw-summarizer-text-indigo-600'
     }`}
   >
     {label}
@@ -52,28 +52,47 @@ const ProviderTab = ({
 );
 
 const ChromeAIInfo = () => (
-  <div className="tw-summarizer-text-sm tw-summarizer-text-gray-500 tw-summarizer-space-y-2 tw-summarizer-leading-relaxed">
-    <p>
-      Chrome AI runs the Gemini Nano model fully on-device — no API key, no data sent externally.
-    </p>
-    <p className="tw-summarizer-font-medium tw-summarizer-text-gray-700">Requirements</p>
-    <ul className="tw-summarizer-list-disc tw-summarizer-pl-4 tw-summarizer-space-y-1">
-      <li>Chrome 138 or later</li>
-      <li>22 GB free storage · 16 GB RAM (or GPU with 4 GB+ VRAM)</li>
-      <li>
-        Enable{' '}
-        <span className="tw-summarizer-font-mono tw-summarizer-text-xs tw-summarizer-bg-gray-100 tw-summarizer-px-1 tw-summarizer-rounded">
-          Optimization Guide On Device Model
-        </span>{' '}
-        in{' '}
-        <span className="tw-summarizer-font-mono tw-summarizer-text-xs tw-summarizer-bg-gray-100 tw-summarizer-px-1 tw-summarizer-rounded">
-          chrome://flags
-        </span>
-      </li>
-    </ul>
+  <div className="tw-summarizer-text-sm tw-summarizer-space-y-3 tw-summarizer-leading-relaxed">
+    <div className="tw-summarizer-bg-amber-50 tw-summarizer-border tw-summarizer-border-amber-200 tw-summarizer-rounded-lg tw-summarizer-p-3 tw-summarizer-text-amber-800 tw-summarizer-text-xs">
+      <strong>Manual setup required.</strong> Chrome AI does not work out of the box — your machine
+      must meet specific requirements and you must enable a flag in Chrome.
+    </div>
+    <div>
+      <p className="tw-summarizer-font-medium tw-summarizer-text-gray-700 tw-summarizer-mb-1">
+        Requirements
+      </p>
+      <ul className="tw-summarizer-list-disc tw-summarizer-pl-4 tw-summarizer-space-y-1 tw-summarizer-text-gray-500">
+        <li>Chrome 138 or later on desktop (not supported on mobile)</li>
+        <li>At least 22 GB free storage on the volume with your Chrome profile</li>
+        <li>16 GB RAM, or a GPU with 4 GB+ VRAM</li>
+        <li>Unmetered network connection for initial model download (~1.7 GB)</li>
+      </ul>
+    </div>
+    <div>
+      <p className="tw-summarizer-font-medium tw-summarizer-text-gray-700 tw-summarizer-mb-1">
+        How to enable
+      </p>
+      <ol className="tw-summarizer-list-decimal tw-summarizer-pl-4 tw-summarizer-space-y-1 tw-summarizer-text-gray-500">
+        <li>
+          Open{' '}
+          <span className="tw-summarizer-font-mono tw-summarizer-text-xs tw-summarizer-bg-gray-100 tw-summarizer-px-1 tw-summarizer-rounded">
+            chrome://flags
+          </span>
+        </li>
+        <li>
+          Search for{' '}
+          <span className="tw-summarizer-font-mono tw-summarizer-text-xs tw-summarizer-bg-gray-100 tw-summarizer-px-1 tw-summarizer-rounded">
+            Optimization Guide On Device Model
+          </span>{' '}
+          and set it to <strong>Enabled</strong>
+        </li>
+        <li>Restart Chrome, then wait for the model to download automatically</li>
+      </ol>
+    </div>
     <p className="tw-summarizer-text-xs tw-summarizer-text-gray-400">
-      Chrome AI provides a key-points summary. For full triage (verdict, content type, knowledge
-      level), use a cloud provider.
+      Note: Chrome AI returns a key-points summary rather than a full structured triage. For
+      verdict, content type, and knowledge level classification, configure a cloud provider below as
+      your primary.
     </p>
   </div>
 );
@@ -94,35 +113,34 @@ const LANGUAGES = [
 ];
 
 const Options = () => {
-  const [provider, setProvider] = useState<ProviderId>('openai');
+  const [provider, setProvider] = useState<ProviderId>('chrome-ai');
   const [language, setLanguage] = useState<string>('en-US');
   const [keys, setKeys] = useState<ProviderKeys>(DEFAULT_KEYS);
   const [apiKeyError, setApiKeyError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    chrome.storage.sync.get(
-      ['provider', 'language', ...Object.keys(DEFAULT_KEYS)],
-      (result) => {
-        setProvider((result.provider as ProviderId) || 'openai');
-        setLanguage((result.language as string) || 'en-US');
-        setKeys({
-          openaiKey: result.openaiKey || '',
-          openaiModel: result.openaiModel || DEFAULT_KEYS.openaiModel,
-          claudeKey: result.claudeKey || '',
-          claudeModel: result.claudeModel || DEFAULT_KEYS.claudeModel,
-          geminiKey: result.geminiKey || '',
-          geminiModel: result.geminiModel || DEFAULT_KEYS.geminiModel,
-          deepseekKey: result.deepseekKey || '',
-          deepseekModel: result.deepseekModel || DEFAULT_KEYS.deepseekModel,
-        });
-      }
-    );
+    chrome.storage.sync.get(['provider', 'language', ...Object.keys(DEFAULT_KEYS)], (result) => {
+      setProvider((result.provider as ProviderId) || 'chrome-ai');
+      setLanguage((result.language as string) || 'en-US');
+      setKeys({
+        openaiKey: result.openaiKey || '',
+        openaiModel: result.openaiModel || DEFAULT_KEYS.openaiModel,
+        claudeKey: result.claudeKey || '',
+        claudeModel: result.claudeModel || DEFAULT_KEYS.claudeModel,
+        geminiKey: result.geminiKey || '',
+        geminiModel: result.geminiModel || DEFAULT_KEYS.geminiModel,
+        deepseekKey: result.deepseekKey || '',
+        deepseekModel: result.deepseekModel || DEFAULT_KEYS.deepseekModel,
+      });
+    });
   }, []);
 
   const activeProvider = PROVIDERS.find((p) => p.id === provider)!;
-  const apiKey = provider !== 'chrome-ai' ? keys[`${provider}Key` as keyof ProviderKeys] as string : '';
-  const model = provider !== 'chrome-ai' ? keys[`${provider}Model` as keyof ProviderKeys] as string : '';
+  const apiKey =
+    provider !== 'chrome-ai' ? (keys[`${provider}Key` as keyof ProviderKeys] as string) : '';
+  const model =
+    provider !== 'chrome-ai' ? (keys[`${provider}Model` as keyof ProviderKeys] as string) : '';
 
   const handleApiKeyChange = (value: string) => {
     const sanitized = sanitize(value);
@@ -150,7 +168,7 @@ const Options = () => {
             <p className="tw-summarizer-text-sm tw-summarizer-font-semibold tw-summarizer-text-gray-700 tw-summarizer-mb-2">
               AI Provider
             </p>
-            <div className="tw-summarizer-flex tw-summarizer-flex-wrap tw-summarizer-gap-1.5 tw-summarizer-p-1 tw-summarizer-bg-gray-100 tw-summarizer-rounded-lg">
+            <div className="tw-summarizer-flex tw-summarizer-flex-wrap tw-summarizer-gap-1.5">
               {PROVIDERS.map((p) => (
                 <ProviderTab
                   key={p.id}
@@ -170,7 +188,7 @@ const Options = () => {
             value={language}
             options={LANGUAGES}
             onChange={setLanguage}
-            text="The triage result will be written in this language."
+            text="The triage result text will be written in this language. Labels like content type and verdict remain in English regardless. Results are cached per page. As consequence, if you change language and want a fresh assessment, use the Reassess button in the popup."
           />
 
           {provider === 'chrome-ai' ? (
@@ -200,7 +218,7 @@ const Options = () => {
         </div>
       </FormOptionsMain>
 
-      <div className="!tw-summarizer-px-4 tw-summarizer-pb-4 tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-between">
+      <div className="tw-summarizer-border-gray-200 tw-summarizer-px-4 tw-summarizer-py-4 tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-between">
         <FormSubmit saveSettings={handleSave} />
         {saved && (
           <span className="tw-summarizer-text-sm tw-summarizer-text-emerald-600 tw-summarizer-font-medium">

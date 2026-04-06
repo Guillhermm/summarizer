@@ -66,7 +66,7 @@ const IdleState = ({ onAssess }: { onAssess: () => void }) => (
     </p>
     <button
       onClick={onAssess}
-      className="tw-summarizer-w-full tw-summarizer-bg-indigo-500 hover:tw-summarizer-bg-indigo-600 tw-summarizer-text-white tw-summarizer-text-sm tw-summarizer-font-medium tw-summarizer-py-2.5 tw-summarizer-px-4 tw-summarizer-rounded-lg tw-summarizer-transition-colors tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-gap-2 tw-summarizer-cursor-pointer"
+      className="tw-summarizer-p-2 tw-summarizer-uppercase tw-summarizer-w-full tw-summarizer-bg-indigo-500 hover:tw-summarizer-bg-indigo-600 tw-summarizer-text-white tw-summarizer-text-sm tw-summarizer-font-bold tw-summarizer-rounded-lg tw-summarizer-transition-colors tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-gap-2 tw-summarizer-cursor-pointer"
     >
       Assess this page
       <span aria-hidden>→</span>
@@ -152,9 +152,13 @@ const ResultState = ({
 
       <div className="tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-gap-1.5">
         <p className="tw-summarizer-text-xs tw-summarizer-text-gray-300">
-          {assessedAt ? `${formatTimeAgo(assessedAt)} via ${providerLabel}` : `via ${providerLabel}`}
+          {assessedAt
+            ? `${formatTimeAgo(assessedAt)} via ${providerLabel}`
+            : `via ${providerLabel}`}
         </p>
-        <span className="tw-summarizer-text-gray-200" aria-hidden>·</span>
+        <span className="tw-summarizer-text-gray-200" aria-hidden>
+          ·
+        </span>
         <button
           onClick={onReassess}
           className="tw-summarizer-text-xs tw-summarizer-text-indigo-400 hover:tw-summarizer-text-indigo-600 tw-summarizer-transition-colors tw-summarizer-cursor-pointer"
@@ -180,13 +184,22 @@ const ErrorState = ({ error, onRetry }: { error: string | null; onRetry: () => v
   </div>
 );
 
-export const Popup = ({ status, result, assessedAt, error, onAssess, onReassess, onOpenOptions, onReset }: PopupProps) => (
+export const Popup = ({
+  status,
+  result,
+  assessedAt,
+  error,
+  onAssess,
+  onReassess,
+  onOpenOptions,
+  onReset,
+}: PopupProps) => (
   <div className="tw-summarizer-w-80 tw-summarizer-bg-white tw-summarizer-font-sans">
-    <div className="tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-between tw-summarizer-px-4 tw-summarizer-py-3 tw-summarizer-border-b tw-summarizer-border-gray-100">
+    <div className="tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-between tw-summarizer-px-4 tw-summarizer-py-3 tw-summarizer-border-b tw-summarizer-border-gray-200">
       <div className="tw-summarizer-flex tw-summarizer-items-center tw-summarizer-gap-2">
         <IconSummarizer className="tw-summarizer-w-4 tw-summarizer-h-4 tw-summarizer-text-indigo-500" />
         <span className="tw-summarizer-text-sm tw-summarizer-font-semibold tw-summarizer-text-gray-900">
-          Page Triage
+          Summarizer
         </span>
       </div>
       <div className="tw-summarizer-flex tw-summarizer-items-center tw-summarizer-gap-3">
@@ -211,7 +224,9 @@ export const Popup = ({ status, result, assessedAt, error, onAssess, onReassess,
     <div className="tw-summarizer-px-4">
       {status === 'idle' && <IdleState onAssess={onAssess} />}
       {status === 'loading' && <LoadingState />}
-      {status === 'result' && result && <ResultState result={result} assessedAt={assessedAt} onReassess={onReassess} />}
+      {status === 'result' && result && (
+        <ResultState result={result} assessedAt={assessedAt} onReassess={onReassess} />
+      )}
       {status === 'error' && <ErrorState error={error} onRetry={onAssess} />}
     </div>
   </div>

@@ -3,21 +3,35 @@
 type SummarizerAvailability = 'available' | 'downloadable' | 'unavailable';
 
 interface SummarizerCreateOptions {
-  type?: 'tl;dr' | 'key-points' | 'teaser' | 'headline';
+  type?: 'key-points' | 'teaser' | 'headline';
   format?: 'plain-text' | 'markdown';
   length?: 'short' | 'medium' | 'long';
+  outputLanguage?: string;
   monitor?: (monitor: EventTarget) => void;
   signal?: AbortSignal;
 }
 
+interface SummarizerSummarizeOptions {
+  context?: string;
+  outputLanguage?: string;
+  signal?: AbortSignal;
+}
+
 interface SummarizerInstance {
-  summarize(text: string, options?: { context?: string; signal?: AbortSignal }): Promise<string>;
+  summarize(text: string, options?: SummarizerSummarizeOptions): Promise<string>;
   destroy(): void;
   ready: Promise<void>;
 }
 
+interface SummarizerAvailabilityOptions {
+  type?: 'key-points' | 'teaser' | 'headline';
+  format?: 'plain-text' | 'markdown';
+  length?: 'short' | 'medium' | 'long';
+  outputLanguage?: string;
+}
+
 interface SummarizerFactory {
-  availability(): Promise<SummarizerAvailability>;
+  availability(options?: SummarizerAvailabilityOptions): Promise<SummarizerAvailability>;
   create(options?: SummarizerCreateOptions): Promise<SummarizerInstance>;
 }
 

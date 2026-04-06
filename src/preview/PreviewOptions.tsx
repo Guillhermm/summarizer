@@ -22,11 +22,7 @@ const PreviewOptions = () => {
           <StylesWrapper>
             <Form>
               <FormOptionsMain>
-                <FormOption
-                  {...options.apiKey}
-                  handleChange={setApiKey}
-                  value={apiKey}
-                />
+                <FormOption {...options.apiKey} handleChange={setApiKey} value={apiKey} />
               </FormOptionsMain>
               <FormOptionsAdditional>{null}</FormOptionsAdditional>
               <FormSubmit />

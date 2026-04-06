@@ -9,7 +9,9 @@ global.chrome = {
     local: {
       get: jest.fn((keys: string[], cb: (result: Record<string, unknown>) => void) => {
         const result: Record<string, unknown> = {};
-        keys.forEach((k) => { if (store[k] !== undefined) result[k] = store[k]; });
+        keys.forEach((k) => {
+          if (store[k] !== undefined) result[k] = store[k];
+        });
         cb(result);
       }),
       set: jest.fn((data: Record<string, unknown>, cb?: () => void) => {

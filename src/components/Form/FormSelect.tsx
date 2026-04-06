@@ -20,7 +20,7 @@ export const FormSelect = ({ label, value, options, onChange, text }: FormSelect
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="!tw-summarizer-p-1.5 tw-summarizer-border tw-summarizer-w-full tw-summarizer-rounded tw-summarizer-text-sm tw-summarizer-bg-white tw-summarizer-cursor-pointer"
+      className="tw-summarizer-p-1.5 tw-summarizer-border tw-summarizer-w-full tw-summarizer-rounded tw-summarizer-text-sm tw-summarizer-bg-white tw-summarizer-cursor-pointer"
     >
       {options.map((opt) => (
         <option key={opt.id} value={opt.id}>

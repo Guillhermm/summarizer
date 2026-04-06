@@ -6,7 +6,15 @@ const calcReadingTime = (text: string): string => {
   return `~${minutes} min`;
 };
 
-export const getChromeAITriage = async (text: string): Promise<TriageResult> => {
+// Chrome AI Summarizer only supports these output languages (BCP-47 base codes).
+const SUPPORTED_LANGUAGES = ['en', 'es', 'ja'];
+
+const toSupportedLanguage = (locale: string): string => {
+  const base = locale.split('-')[0].toLowerCase();
+  return SUPPORTED_LANGUAGES.includes(base) ? base : 'en';
+};
+
+export const getChromeAITriage = async (text: string, language = 'en-US'): Promise<TriageResult> => {
   // The correct API since Chrome 138 is the global `Summarizer` — not window.ai.summarizer.
   if (typeof Summarizer === 'undefined') {
     throw new Error(
@@ -14,19 +22,20 @@ export const getChromeAITriage = async (text: string): Promise<TriageResult> => 
     );
   }
 
-  const availability = await Summarizer.availability();
+  const outputLanguage = toSupportedLanguage(language);
+  const summarizerOptions = { type: 'teaser' as const, format: 'plain-text' as const, length: 'short' as const, outputLanguage };
+
+  const availability = await Summarizer.availability(summarizerOptions);
   console.log('[Triage] Chrome AI Summarizer availability:', availability);
 
   if (availability === 'unavailable') {
     throw new Error(
-      "Chrome AI Summarizer is unavailable on this device. Your system may not meet the requirements (22 GB free storage, 16 GB RAM)."
+      'Chrome AI Summarizer is unavailable on this device. Your system may not meet the requirements (22 GB free storage, 16 GB RAM).'
     );
   }
 
   const summarizer = await Summarizer.create({
-    type: 'key-points',
-    format: 'plain-text',
-    length: 'medium',
+    ...summarizerOptions,
     monitor(m) {
       m.addEventListener('downloadprogress', (e: Event) => {
         const progress = e as ProgressEvent;
@@ -38,8 +47,11 @@ export const getChromeAITriage = async (text: string): Promise<TriageResult> => 
   // If downloadable, wait for the model to finish before summarizing.
   await summarizer.ready;
 
-  const summary = await summarizer.summarize(text);
+  const raw = await summarizer.summarize(text, { outputLanguage });
   summarizer.destroy();
+
+  // Chrome AI may prefix the summary with a bullet or dash — strip it.
+  const summary = raw.replace(/^[\s*\-•]+/, '').trim();
 
   return {
     argument: summary,

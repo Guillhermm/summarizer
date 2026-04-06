@@ -5,25 +5,3 @@
 @layer base {
   @import url('./preflight.css');
 }
-
-@layer components {
-  .summarizer-hovered {
-    outline: 3px dashed #5ea9ea;
-    outline-offset: 5px;
-    position: relative;
-  }
-  .summarizer-hovered::before {
-    content: '';
-    position: absolute;
-    left: -5px;
-    right: -5px;
-    top: -5px;
-    bottom: -5px;
-    background: #5ea9ea;
-    opacity: 0.1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-}

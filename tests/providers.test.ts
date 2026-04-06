@@ -53,9 +53,7 @@ describe('callOpenAI', () => {
 
 describe('callClaude', () => {
   it('returns content on success', async () => {
-    mockFetch.mockReturnValueOnce(
-      mockOk({ content: [{ text: '{"verdict":"skip"}' }] })
-    );
+    mockFetch.mockReturnValueOnce(mockOk({ content: [{ text: '{"verdict":"skip"}' }] }));
     const result = await callClaude('prompt', 'claude-sonnet-4-6', 'sk-ant-test');
     expect(result).toBe('{"verdict":"skip"}');
     expect(mockFetch).toHaveBeenCalledWith(

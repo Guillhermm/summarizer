@@ -2,10 +2,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "node",
+    "ignoreDeprecations": "5.0",
     "target": "es6",
     "jsx": "react",
     "isolatedModules": false,
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "."
   },
   "include": ["src/**/*", "tests/**/*"]
 }

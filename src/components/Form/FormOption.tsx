@@ -79,7 +79,7 @@ export const FormOption = ({
         onChange={handleChange ? (e) => handleChange(e.target.value) : undefined}
         onBlur={handleBlur}
         placeholder={placeholder ?? label}
-        className="!tw-summarizer-p-1 tw-summarizer-border tw-summarizer-w-full"
+        className="tw-summarizer-p-1 tw-summarizer-border tw-summarizer-w-full"
       />
       {textHelper && (
         <span className="tw-summarizer-text-gray-900 tw-summarizer-text-sm tw-summarizer-font-medium">
