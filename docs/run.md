@@ -3,8 +3,6 @@
 ## Dev
 
 Development mode allows to preview following UIs:
-- Summarizer
-- Summarizer Modal
 - Browser Extension Options 
 - Browser Extension Popup
 
