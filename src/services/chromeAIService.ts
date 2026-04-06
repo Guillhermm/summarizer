@@ -14,7 +14,10 @@ const toSupportedLanguage = (locale: string): string => {
   return SUPPORTED_LANGUAGES.includes(base) ? base : 'en';
 };
 
-export const getChromeAITriage = async (text: string, language = 'en-US'): Promise<TriageResult> => {
+export const getChromeAITriage = async (
+  text: string,
+  language = 'en-US'
+): Promise<TriageResult> => {
   // The correct API since Chrome 138 is the global `Summarizer` — not window.ai.summarizer.
   if (typeof Summarizer === 'undefined') {
     throw new Error(
@@ -23,7 +26,12 @@ export const getChromeAITriage = async (text: string, language = 'en-US'): Promi
   }
 
   const outputLanguage = toSupportedLanguage(language);
-  const summarizerOptions = { type: 'teaser' as const, format: 'plain-text' as const, length: 'short' as const, outputLanguage };
+  const summarizerOptions = {
+    type: 'teaser' as const,
+    format: 'plain-text' as const,
+    length: 'short' as const,
+    outputLanguage,
+  };
 
   const availability = await Summarizer.availability(summarizerOptions);
   console.log('[Triage] Chrome AI Summarizer availability:', availability);

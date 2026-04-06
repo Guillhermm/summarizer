@@ -18,8 +18,8 @@ export const FormOptionsMain = ({ children }: FormOptionsMainProps) => (
         <br />
         <ul className="tw-summarizer-list-disc tw-summarizer-pl-4 tw-summarizer-space-y-1 tw-summarizer-text-gray-500">
           <li>
-            <strong className="tw-summarizer-text-gray-800">Chrome AI</strong> runs fully
-            on-device (no API key needed), but requires a one-time model download and may be slower.
+            <strong className="tw-summarizer-text-gray-800">Chrome AI</strong> runs fully on-device
+            (no API key needed), but requires a one-time model download and may be slower.
           </li>
           <li>
             <strong className="tw-summarizer-text-gray-800">Cloud providers</strong> (OpenAI,
