@@ -1,26 +1,39 @@
 import { configs } from '../configs';
-import { getOpenAIResponse } from '../services/openaiService';
+import { ProviderId } from '../types/providers';
 
 export type FormValidationProps = {
   error: boolean;
   message?: string;
 };
 
-export const validateApiKey = async (value: string): Promise<FormValidationProps> => {
-  const validation: FormValidationProps = {
-    error: false,
-    message: configs.form.validation.apiValid,
-  };
+// Key format validation by provider — no network call, no cost, actually provider-aware.
+const KEY_PATTERNS: Partial<Record<ProviderId, { prefix: string; minLength: number }>> = {
+  openai:   { prefix: 'sk-',     minLength: 40 },
+  claude:   { prefix: 'sk-ant-', minLength: 40 },
+  gemini:   { prefix: 'AIza',    minLength: 30 },
+  deepseek: { prefix: 'sk-',     minLength: 30 },
+};
 
-  const content = 'This is just a test to validate API key.';
-  const response = await getOpenAIResponse({ content, apiKey: value });
-
-  if (response?.hasError) {
-    validation.error = true;
-    validation.message = configs.form.validation.apiInvalid;
+export const validateApiKey = (
+  value: string,
+  provider: ProviderId = 'openai'
+): FormValidationProps => {
+  if (!value) {
+    return { error: false }; // Empty is allowed (key is optional fallback).
   }
 
-  return validation;
+  const pattern = KEY_PATTERNS[provider];
+  if (!pattern) {
+    // chrome-ai has no key — always valid.
+    return { error: false };
+  }
+
+  const isValid =
+    value.startsWith(pattern.prefix) && value.trim().length >= pattern.minLength;
+
+  return isValid
+    ? { error: false, message: configs.form.validation.apiValid }
+    : { error: true,  message: configs.form.validation.apiInvalid };
 };
 
 export const validateEmptyField = (value: string): FormValidationProps =>

@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Summarizer",
-  "version": "1.0.0",
-  "description": "A browser extension to summarize text on web pages.",
+  "version": "2.0.0",
+  "description": "Triage any article in seconds — verdict, reading time, and key argument before you commit.",
   "author": "guillhermm_zenni@hotmail.com",
   "permissions": [
     "storage",
-    "activeTab",
-    "scripting"
+    "activeTab"
   ],
   "action": {
     "default_popup": "popup.html"

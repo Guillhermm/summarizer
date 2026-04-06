@@ -20,9 +20,6 @@ export type ConfigFormOption = {
 
 export type ConfigOptions = {
   apiKey: ConfigFormOption;
-  maxLength: ConfigFormOption;
-  minChars: ConfigFormOption;
-  minWords: ConfigFormOption;
 };
 
 export type ConfigModal = {

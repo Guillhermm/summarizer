@@ -1,55 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Summarizer } from '../components/Summarizer';
+import { Popup as PopupUI } from '../components/Popup';
+import { StylesWrapper } from '../components/StylesWrapper';
+import { TriageResult, TriageStatus } from '../types/triage';
 import '../styles/main.css';
 
-const originalTexts: string[] = [
-  `
-    WHETHER we listen with aloof amusement to the dreamlike
-    mumbo jumbo of some red-eyed witch doctor of the Congo, or
-    read with cultivated rapture thin translations from the sonnets of
-    the mystic Lao-tse; now and again crack the hard nutshell of an
-    argument of Aquinas, or catch suddenly the shining meaning of
-    a bizarre Eskimo fairy tale: it will be always the one, shape-shifting
-    yet marvelously constant story that we find, together with a chal-
-    lengingly persistent suggestion of more remaining to be experi­
-    enced than will ever be known or told.
-  `,
-  `
-    Throughout the inhabited world, in all times and under every
-    circumstance, the myths of man have flourished; and they have
-    been the living inspiration of whatever else may have appeared
-    out of the activities of the human body and mind. It would not
-    be too much to say that myth is the secret opening through
-    which the inexhaustible energies of the cosmos pour into human
-    cultural manifestation. Religions, philosophies, arts, the social
-    forms of primitive and historic man, prime discoveries in science
-    and technology, the very dreams that blister sleep, boil up from
-    the basic, magic ring of myth.
-  `,
-  `The wonder is that the characteristic efficacy to touch and in­
-  spire deep creative centers dwells in the smallest nursery fairy
-  tale—as the flavor of the ocean is contained in a droplet or the
-  whole mystery of life within the egg of a flea. For the symbols of
-  mythology are not manufactured; they cannot be ordered, in­
-  vented, or permanently suppressed. They are spontaneous pro­
-  ductions of the psyche, and each bears within it, undamaged, the
-  germ power of its source.`,
-  `What is the secret of the timeless vision? From what profundity
-  of the mind does it derive? Why is mythology everywhere the
-  same, beneath its varieties of costume? And what does it teach?`,
-];
+const mockResult: TriageResult = {
+  argument:
+    'The myths of humanity share a single underlying structure that transcends culture, pointing to universal patterns in the human psyche.',
+  readingTime: '~14 min',
+  contentType: 'research',
+  knowledgeLevel: 'academic',
+  verdict: 'optional',
+  verdictReason: 'Rich and rewarding, but dense — best saved for when you have time to focus.',
+  poweredBy: 'chrome-ai',
+};
 
-const PreviewSummarizer = () => (
-  <>
-    <div className="tw-summarizer-m-8 tw-summarizer-p-4">
-      {originalTexts.map((text, id) => (
-        <div key={id}>{text}</div>
-      ))}
+const PreviewSummarizer = () => {
+  const [status, setStatus] = useState<TriageStatus>('idle');
+  const [result, setResult] = useState<TriageResult | null>(null);
+
+  const handleAssess = () => {
+    setStatus('loading');
+    setTimeout(() => {
+      setResult(mockResult);
+      setStatus('result');
+    }, 1500);
+  };
+
+  return (
+    <div className="tw-summarizer-w-screen tw-summarizer-h-screen tw-summarizer-flex tw-summarizer-items-center tw-summarizer-justify-center tw-summarizer-bg-black tw-summarizer-bg-opacity-10">
+      <div className="tw-summarizer-bg-white tw-summarizer-absolute tw-summarizer-rounded-lg tw-summarizer-shadow-xl tw-summarizer-overflow-hidden">
+        <StylesWrapper>
+          <PopupUI
+            status={status}
+            result={result}
+            assessedAt={Date.now() - 7200000}
+            error={null}
+            onAssess={handleAssess}
+            onReassess={handleAssess}
+            onOpenOptions={() => undefined}
+            onReset={() => {
+              setStatus('idle');
+              setResult(null);
+            }}
+          />
+        </StylesWrapper>
+      </div>
     </div>
-    <Summarizer isEnabled />
-  </>
-);
+  );
+};
 
 const container = document.getElementById('root');
 

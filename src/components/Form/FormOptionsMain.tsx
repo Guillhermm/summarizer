@@ -8,25 +8,34 @@ export interface FormOptionsMainProps {
 export const FormOptionsMain = ({ children }: FormOptionsMainProps) => (
   <div className="!tw-summarizer-px-4 tw-summarizer-pb-4 tw-summarizer-flex tw-summarizer-flex-col tw-summarizer-gap-4">
     <div>
-      Designed for Chrome, this browser extension is a helper utility that leverages generative AI
-      capabilities to provide a way to save you time when reading any kind of long texts.
+      <strong>Page Triage</strong> assesses any article before you commit your time — surfacing the
+      main argument, reading time, content type, and a plain verdict.
       <br />
-      The version 1.0 exclusively relies on{' '}
-      <Link href="https://openai.com/api/" target="_blank" rel="noreferrer">
-        OpenAI API
-      </Link>{' '}
-      to work, based on model{' '}
+      <br />
+      On Chrome 131+, everything runs on-device via{' '}
       <Link
-        href="https://platform.openai.com/docs/models/gpt-3-5-turbo"
+        href="https://developer.chrome.com/docs/ai/built-in"
         target="_blank"
         rel="noreferrer"
       >
-        GPT-3.5 Turbo
+        Chrome&apos;s built-in AI
+      </Link>{' '}
+      — private, free, no key needed. On other browsers, it falls back to{' '}
+      <Link href="https://openai.com/api/" target="_blank" rel="noreferrer">
+        OpenAI
+      </Link>{' '}
+      (
+      <Link
+        href="https://platform.openai.com/docs/models/gpt-4o-mini"
+        target="_blank"
+        rel="noreferrer"
+      >
+        GPT-4o mini
       </Link>
-      . Other generative AIs like Gemini, from Google, might be supported in future versions.
+      ) if a key is provided below.
     </div>
     <div>
-      v1.0.0 •{' '}
+      v2.0.0 •{' '}
       <Link href="https://github.com/Guillhermm/summarizer" target="_blank" rel="noreferrer">
         Github
       </Link>

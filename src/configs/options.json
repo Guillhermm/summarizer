@@ -2,23 +2,8 @@
   "apiKey": {
     "label": "OpenAI API Key",
     "placeholder": "API Key",
-    "text": "To use this extension, users have to create an account in OpenAI and get a key to set it in here.",
-    "textHelper": "Once the key is filled in, press tab to have it validated",
+    "text": "Optional — used as a fallback when Chrome's built-in AI is not available on your device.",
+    "textHelper": "Once the key is filled in, press tab to validate it",
     "type": "password"
-  },
-  "maxLength": {
-    "label": "Max Summarized Text",
-    "text": "Set the maximum number of characters the summarized text should have.",
-    "type": "number"
-  },
-  "minChars": {
-    "label": "Min Original Text (chars)",
-    "text": "Set the minimum number of characters in a web page text to be detected.",
-    "type": "number"
-  },
-  "minWords": {
-    "label": "Min Original Text (words)",
-    "text": "Set the minimum number of words in a web page text to be detected.",
-    "type": "number"
   }
 }
