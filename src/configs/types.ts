@@ -3,7 +3,9 @@ export type ConfigForm = {
     label: string;
   };
   validation: {
+    apiChecking: string;
     apiInvalid: string;
+    apiUnreachable: string;
     apiValid: string;
     empty: string;
     minNumber: string;

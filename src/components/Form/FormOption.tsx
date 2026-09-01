@@ -8,6 +8,8 @@ export interface FormOptionProps {
   isRequired?: boolean;
   label: string;
   min?: number;
+  /** Runs after validation, with the field value, when the field loses focus. */
+  onBlur?: (value: string) => void;
   placeholder?: string;
   setFormHasErrors?: Dispatch<SetStateAction<boolean>>;
   text?: string;
@@ -23,6 +25,7 @@ export const FormOption = ({
   isRequired = false,
   label,
   min,
+  onBlur,
   placeholder,
   setFormHasErrors,
   text,
@@ -64,6 +67,8 @@ export const FormOption = ({
       const errors = v.filter((validation) => validation.error);
       setFormHasErrors(errors.length > 0);
     }
+
+    onBlur?.(value);
   };
 
   return (

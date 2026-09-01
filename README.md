@@ -22,12 +22,33 @@ Summarizer supports multiple AI backends. Configure your preferred provider in t
 | Provider | Key required | Notes |
 |---|---|---|
 | Chrome AI | No | On-device (Gemini Nano), private, may be slower. Chrome 138+ only. |
-| OpenAI | Yes | GPT-4o mini by default. Fast and accurate. |
-| Anthropic Claude | Yes | Claude Sonnet by default. |
-| Google Gemini | Yes | Gemini 2.5 Flash by default. |
-| DeepSeek | Yes | DeepSeek Chat by default. |
+| OpenAI | Yes | Key starts with `sk-`. |
+| Anthropic Claude | Yes | Key starts with `sk-ant-`. |
+| Google Gemini | Yes | Key starts with `AIza`. |
+| DeepSeek | Yes | Key starts with `sk-`. |
 
 Chrome AI is the default. If it is unavailable on your device, select a cloud provider and add your API key in the options page.
+
+### API key verification and model lists
+
+Cloud providers retire model names on their own schedule, so the extension does not
+ship a fixed catalog. Paste your API key in the options page and press tab: the
+extension calls the provider's model listing endpoint, which reports whether the key
+works and returns exactly the models that key can currently use.
+
+- **Key accepted**: the Model dropdown is replaced with the provider's live catalog.
+  A previously saved model the provider no longer offers is swapped for the newest
+  one it does.
+- **Key rejected**: the field reports an invalid key and the dropdown keeps its
+  bundled fallback list.
+- **Provider unreachable**: the field says so, and nothing is changed.
+
+Until a key is verified, the dropdown shows a small bundled fallback list. Those
+entries are a starting point, not a guarantee: only the live catalog is authoritative.
+
+The extension declares `host_permissions` for the four provider APIs. Chrome grants
+extension pages a CORS exemption only for hosts listed there, which is what lets the
+options page and popup call these APIs directly with your own key.
 
 ### Chrome AI setup
 
@@ -77,7 +98,8 @@ Open `http://localhost:8080/preview/popup.html` or `http://localhost:8080/previe
 Open the extension options (gear icon in the popup) to:
 
 - Choose your AI provider
-- Enter your API key (for cloud providers)
+- Enter your API key (for cloud providers), which is verified against the provider
+- Pick a model from the provider's live catalog
 - Select the response language (English by default; Chrome AI supports English, Spanish, and Japanese only)
 
 Settings are stored in `chrome.storage.sync` and sync across devices when signed into Chrome.
@@ -87,7 +109,7 @@ Settings are stored in `chrome.storage.sync` and sync across devices when signed
 - TypeScript + React
 - Tailwind CSS v3 (custom prefix, no preflight bleed)
 - Webpack 5
-- Jest + ts-jest (35 tests across 4 suites)
+- Jest + ts-jest + React Testing Library (58 tests across 7 suites)
 - ESLint + Prettier
 - GitHub Actions CI (lint + test on every push)
 

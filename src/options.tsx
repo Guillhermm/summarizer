@@ -1,33 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Form, FormOption, FormOptionsMain, FormSelect, FormSubmit } from './components/Form';
 import { StylesWrapper } from './components/StylesWrapper';
-import { PROVIDERS } from './services/providers';
-import { ProviderId } from './types/providers';
+import { configs } from './configs';
+import { DEFAULT_MODELS, PROVIDERS, PROVIDER_MODEL_LISTERS } from './services/providers';
+import { CloudProviderId, ModelOption, ProviderId } from './types/providers';
 import { sanitize } from './utils/sanitize';
 import { validateApiKey } from './utils/formValidation';
 
-// Per-provider state stored as flat keys in chrome.storage.sync.
-type ProviderKeys = {
-  openaiKey: string;
-  openaiModel: string;
-  claudeKey: string;
-  claudeModel: string;
-  geminiKey: string;
-  geminiModel: string;
-  deepseekKey: string;
-  deepseekModel: string;
-};
+const CLOUD_PROVIDERS = Object.keys(DEFAULT_MODELS) as CloudProviderId[];
 
-const DEFAULT_KEYS: ProviderKeys = {
-  openaiKey: '',
-  openaiModel: 'gpt-4o-mini',
-  claudeKey: '',
-  claudeModel: 'claude-sonnet-4-6',
-  geminiKey: '',
-  geminiModel: 'gemini-2.5-flash',
-  deepseekKey: '',
-  deepseekModel: 'deepseek-chat',
+// Per-provider state stored as flat keys in chrome.storage.sync.
+type ProviderKeys = Record<string, string>;
+
+const keyField = (provider: CloudProviderId) => `${provider}Key`;
+const modelField = (provider: CloudProviderId) => `${provider}Model`;
+
+const DEFAULT_KEYS: ProviderKeys = CLOUD_PROVIDERS.reduce<ProviderKeys>(
+  (acc, provider) => ({
+    ...acc,
+    [keyField(provider)]: '',
+    [modelField(provider)]: DEFAULT_MODELS[provider],
+  }),
+  {}
+);
+
+// Result of checking a key against the provider's model listing endpoint.
+type KeyStatus = 'idle' | 'checking' | 'valid' | 'invalid' | 'unreachable';
+
+const KEY_STATUS_MESSAGES: Record<Exclude<KeyStatus, 'idle'>, string> = {
+  checking: configs.form.validation.apiChecking,
+  valid: configs.form.validation.apiValid,
+  invalid: configs.form.validation.apiInvalid,
+  unreachable: configs.form.validation.apiUnreachable,
 };
 
 const ProviderTab = ({
@@ -112,45 +117,118 @@ const LANGUAGES = [
   { id: 'ko-KR', label: 'Korean' },
 ];
 
-const Options = () => {
+export const Options = () => {
   const [provider, setProvider] = useState<ProviderId>('chrome-ai');
   const [language, setLanguage] = useState<string>('en-US');
   const [keys, setKeys] = useState<ProviderKeys>(DEFAULT_KEYS);
-  const [apiKeyError, setApiKeyError] = useState<string | null>(null);
+  const [keyStatus, setKeyStatus] = useState<KeyStatus>('idle');
+  const [liveModels, setLiveModels] = useState<Partial<Record<CloudProviderId, ModelOption[]>>>({});
   const [saved, setSaved] = useState(false);
+
+  // A listing that resolves after the user switched tabs must not overwrite the
+  // state of the provider now on screen.
+  const activeProviderRef = useRef<ProviderId>('chrome-ai');
+
+  const selectProvider = (next: ProviderId) => {
+    activeProviderRef.current = next;
+    setProvider(next);
+    setKeyStatus('idle');
+  };
+
+  /**
+   * Asks the provider for its model catalog. The call is authenticated, so it
+   * doubles as key verification. `announce` is off for background refreshes so
+   * the page only reports a result the user asked for.
+   */
+  const loadModels = async (target: CloudProviderId, key: string, announce: boolean) => {
+    if (!key) {
+      if (announce) setKeyStatus('idle');
+      return;
+    }
+
+    if (validateApiKey(key, target).error) {
+      if (announce) setKeyStatus('invalid');
+      return;
+    }
+
+    if (announce) setKeyStatus('checking');
+
+    const result = await PROVIDER_MODEL_LISTERS[target](key);
+
+    if (activeProviderRef.current !== target) return;
+
+    if (!result.ok) {
+      if (announce) setKeyStatus(result.reason === 'auth' ? 'invalid' : 'unreachable');
+      return;
+    }
+
+    setLiveModels((prev) => ({ ...prev, [target]: result.models }));
+
+    // Drop a stored selection the provider no longer offers.
+    setKeys((prev) => {
+      const current = prev[modelField(target)];
+      if (result.models.length === 0 || result.models.some((m) => m.id === current)) return prev;
+      return { ...prev, [modelField(target)]: result.models[0].id };
+    });
+
+    if (announce) setKeyStatus('valid');
+  };
 
   useEffect(() => {
     chrome.storage.sync.get(['provider', 'language', ...Object.keys(DEFAULT_KEYS)], (result) => {
-      setProvider((result.provider as ProviderId) || 'chrome-ai');
+      const storedProvider = (result.provider as ProviderId) || 'chrome-ai';
+      const storedKeys = CLOUD_PROVIDERS.reduce<ProviderKeys>(
+        (acc, id) => ({
+          ...acc,
+          [keyField(id)]: result[keyField(id)] || '',
+          [modelField(id)]: result[modelField(id)] || DEFAULT_KEYS[modelField(id)],
+        }),
+        {}
+      );
+
+      activeProviderRef.current = storedProvider;
+      setProvider(storedProvider);
       setLanguage((result.language as string) || 'en-US');
-      setKeys({
-        openaiKey: result.openaiKey || '',
-        openaiModel: result.openaiModel || DEFAULT_KEYS.openaiModel,
-        claudeKey: result.claudeKey || '',
-        claudeModel: result.claudeModel || DEFAULT_KEYS.claudeModel,
-        geminiKey: result.geminiKey || '',
-        geminiModel: result.geminiModel || DEFAULT_KEYS.geminiModel,
-        deepseekKey: result.deepseekKey || '',
-        deepseekModel: result.deepseekModel || DEFAULT_KEYS.deepseekModel,
-      });
+      setKeys(storedKeys);
+
+      if (storedProvider !== 'chrome-ai') {
+        loadModels(storedProvider, storedKeys[keyField(storedProvider)], false);
+      }
     });
+    // Runs once on mount; loadModels only reads state through setState updaters.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const activeProvider = PROVIDERS.find((p) => p.id === provider)!;
-  const apiKey =
-    provider !== 'chrome-ai' ? (keys[`${provider}Key` as keyof ProviderKeys] as string) : '';
-  const model =
-    provider !== 'chrome-ai' ? (keys[`${provider}Model` as keyof ProviderKeys] as string) : '';
+  const cloudProvider = provider !== 'chrome-ai' ? (provider as CloudProviderId) : null;
+  const apiKey = cloudProvider ? keys[keyField(cloudProvider)] : '';
+  const model = cloudProvider ? keys[modelField(cloudProvider)] : '';
+
+  // Live catalog when we have one, the bundled fallback until then. The stored
+  // selection is always present so the select never disagrees with the state.
+  const modelOptions: ModelOption[] = (() => {
+    if (!cloudProvider) return [];
+    const options = liveModels[cloudProvider] ?? activeProvider.models;
+    return model && !options.some((option) => option.id === model)
+      ? [{ id: model, label: model }, ...options]
+      : options;
+  })();
 
   const handleApiKeyChange = (value: string) => {
+    if (!cloudProvider) return;
     const sanitized = sanitize(value);
-    setKeys((prev) => ({ ...prev, [`${provider}Key`]: sanitized }));
-    const result = validateApiKey(sanitized, provider);
-    setApiKeyError(result.error ? result.message || null : null);
+    setKeys((prev) => ({ ...prev, [keyField(cloudProvider)]: sanitized }));
+    setKeyStatus('idle');
+  };
+
+  const handleApiKeyBlur = (value: string) => {
+    if (!cloudProvider) return;
+    loadModels(cloudProvider, sanitize(value), true);
   };
 
   const handleModelChange = (value: string) => {
-    setKeys((prev) => ({ ...prev, [`${provider}Model`]: value }));
+    if (!cloudProvider) return;
+    setKeys((prev) => ({ ...prev, [modelField(cloudProvider)]: value }));
   };
 
   const handleSave = () => {
@@ -175,8 +253,14 @@ const Options = () => {
                   label={p.label}
                   active={provider === p.id}
                   onClick={() => {
-                    setProvider(p.id);
-                    setApiKeyError(null);
+                    selectProvider(p.id);
+                    if (p.id !== 'chrome-ai' && !liveModels[p.id as CloudProviderId]) {
+                      loadModels(
+                        p.id as CloudProviderId,
+                        keys[keyField(p.id as CloudProviderId)],
+                        false
+                      );
+                    }
                   }}
                 />
               ))}
@@ -201,15 +285,26 @@ const Options = () => {
                 type="password"
                 value={apiKey}
                 handleChange={handleApiKeyChange}
+                onBlur={handleApiKeyBlur}
               />
-              {apiKeyError && (
-                <p className="tw-summarizer-text-xs tw-summarizer-text-red-500">{apiKeyError}</p>
+              {keyStatus !== 'idle' && (
+                <p
+                  className={`tw-summarizer-text-xs ${
+                    keyStatus === 'valid'
+                      ? 'tw-summarizer-text-green-700'
+                      : keyStatus === 'checking'
+                        ? 'tw-summarizer-text-gray-500'
+                        : 'tw-summarizer-text-red-500'
+                  }`}
+                >
+                  {KEY_STATUS_MESSAGES[keyStatus]}
+                </p>
               )}
-              {activeProvider.models.length > 0 && (
+              {modelOptions.length > 0 && (
                 <FormSelect
                   label="Model"
                   value={model}
-                  options={activeProvider.models}
+                  options={modelOptions}
                   onChange={handleModelChange}
                 />
               )}

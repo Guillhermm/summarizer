@@ -2,11 +2,17 @@
   "manifest_version": 3,
   "name": "Summarizer",
   "version": "2.0.0",
-  "description": "Triage any article in seconds — verdict, reading time, and key argument before you commit.",
+  "description": "Triage any article in seconds \u2014 verdict, reading time, and key argument before you commit.",
   "author": "guillhermm_zenni@hotmail.com",
   "permissions": [
     "storage",
     "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "https://api.anthropic.com/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api.deepseek.com/*"
   ],
   "action": {
     "default_popup": "popup.html"

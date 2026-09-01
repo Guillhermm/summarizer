@@ -1,5 +1,5 @@
 import { ContentType, KnowledgeLevel, TriageResult, Verdict } from '../types/triage';
-import { ProviderId } from '../types/providers';
+import { CloudProviderId, ProviderId } from '../types/providers';
 import { PROVIDER_CALLERS, DEFAULT_MODELS } from './providers';
 import { getChromeAITriage } from './chromeAIService';
 
@@ -83,9 +83,7 @@ const getProviderSettings = (): Promise<{
           return resolve({ provider, model: '', apiKey: '', language });
         }
 
-        const model =
-          result[`${provider}Model`] ||
-          DEFAULT_MODELS[provider as Exclude<ProviderId, 'chrome-ai'>];
+        const model = result[`${provider}Model`] || DEFAULT_MODELS[provider as CloudProviderId];
         const apiKey = result[`${provider}Key`] || '';
 
         resolve({ provider, model, apiKey, language });
@@ -105,12 +103,12 @@ export const triagePage = async (text: string): Promise<TriageResult> => {
   }
 
   const prompt = buildPrompt(text, language);
-  const caller = PROVIDER_CALLERS[provider as Exclude<ProviderId, 'chrome-ai'>];
+  const caller = PROVIDER_CALLERS[provider as CloudProviderId];
   const raw = await caller(prompt, model, apiKey);
 
   if (!raw) {
     throw new Error(
-      `${provider} request failed. Check your API key and model in the extension options.`
+      `${provider} request failed. Open the extension options and re-check your API key — the model list refreshes from the provider once the key is verified.`
     );
   }
 

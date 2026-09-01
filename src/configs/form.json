@@ -3,7 +3,9 @@
     "label": "Save"
   },
   "validation": {
+    "apiChecking": "Checking the key with the provider...",
     "apiInvalid": "API Key is invalid",
+    "apiUnreachable": "Could not reach the provider to verify this key. Check your connection and try again.",
     "apiValid": "API Key has been validated",
     "empty": "This field is required",
     "minNumber": "This field requires a minimum value of"

@@ -1,3 +1,14 @@
+import { ModelListResult, ModelOption } from '../../types/providers';
+import { fetchModelList, isChatModel } from './modelList';
+
+interface DeepSeekModel {
+  id: string;
+}
+
+interface DeepSeekModelsResponse {
+  data?: DeepSeekModel[];
+}
+
 // DeepSeek uses an OpenAI-compatible API.
 export const callDeepSeek = async (
   prompt: string,
@@ -36,3 +47,16 @@ export const callDeepSeek = async (
     return null;
   }
 };
+
+export const listDeepSeekModels = (apiKey: string): Promise<ModelListResult> =>
+  fetchModelList({
+    provider: 'DeepSeek',
+    url: 'https://api.deepseek.com/models',
+    headers: { Authorization: `Bearer ${apiKey}` },
+    parse: (data) => {
+      const models = (data as DeepSeekModelsResponse).data ?? [];
+      return models
+        .filter((model) => model.id && isChatModel(model.id))
+        .map((model): ModelOption => ({ id: model.id, label: model.id }));
+    },
+  });

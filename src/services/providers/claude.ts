@@ -1,3 +1,21 @@
+import { ModelListResult, ModelOption } from '../../types/providers';
+import { fetchModelList } from './modelList';
+
+interface ClaudeModel {
+  id: string;
+  display_name?: string;
+}
+
+interface ClaudeModelsResponse {
+  data?: ClaudeModel[];
+}
+
+// Anthropic rejects browser-origin requests unless this header opts in.
+const BROWSER_HEADERS = {
+  'anthropic-version': '2023-06-01',
+  'anthropic-dangerous-direct-browser-access': 'true',
+};
+
 export const callClaude = async (
   prompt: string,
   model: string,
@@ -9,7 +27,7 @@ export const callClaude = async (
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        ...BROWSER_HEADERS,
       },
       body: JSON.stringify({
         model,
@@ -32,3 +50,17 @@ export const callClaude = async (
     return null;
   }
 };
+
+// Anthropic returns the newest models first and supplies a display name.
+export const listClaudeModels = (apiKey: string): Promise<ModelListResult> =>
+  fetchModelList({
+    provider: 'Claude',
+    url: 'https://api.anthropic.com/v1/models?limit=1000',
+    headers: { 'x-api-key': apiKey, ...BROWSER_HEADERS },
+    parse: (data) => {
+      const models = (data as ClaudeModelsResponse).data ?? [];
+      return models
+        .filter((model) => model.id)
+        .map((model): ModelOption => ({ id: model.id, label: model.display_name || model.id }));
+    },
+  });

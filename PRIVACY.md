@@ -1,6 +1,6 @@
 # Privacy Policy — Summarizer Extension
 
-**Last updated: April 2026**
+**Last updated: September 2026**
 
 ## Overview
 
@@ -17,6 +17,10 @@ The extension does **not** collect, transmit, or store page text on any server o
 
 ### API keys
 If you configure a cloud AI provider, your API key is stored locally in `chrome.storage.sync`. This means it may sync across your Chrome devices if you are signed into Chrome sync. Your API key is sent only to the corresponding provider's API endpoint and is never transmitted to the extension developer.
+
+The key is used for two kinds of request, both made directly from your browser to the provider you selected:
+- The triage request that assesses a page.
+- A request to the provider's model listing endpoint, made when you enter a key in the options page and when that page opens with a key already saved. It verifies the key and retrieves the models your account can use. No page content is included in this request.
 
 ### Page URLs
 The URL of the assessed page is stored locally as a cache key. URLs are not transmitted to any external server by the extension itself (they may be included implicitly in requests to AI providers as part of article context).
