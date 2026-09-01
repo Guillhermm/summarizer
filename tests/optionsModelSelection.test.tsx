@@ -46,7 +46,10 @@ const enterKey = (value: string) => {
   fireEvent.blur(input, { target: { value } });
 };
 
-beforeEach(() => mockFetch.mockReset());
+beforeEach(() => {
+  mockFetch.mockReset();
+  (chrome.storage.sync.set as jest.Mock).mockClear();
+});
 
 describe('options model selection', () => {
   it('lists the models returned for a verified key', async () => {
@@ -106,6 +109,11 @@ describe('options model selection', () => {
 
     const select = await screen.findByLabelText<HTMLSelectElement>('Model');
     await waitFor(() => expect(select.value).toBe('deepseek-v4-flash'));
+
+    // Persisted without waiting for Save: until storage is updated the popup
+    // keeps calling the retired model and keeps failing.
+    expect(chrome.storage.sync.set).toHaveBeenCalledWith({ deepseekModel: 'deepseek-v4-flash' });
+    expect(store.deepseekModel).toBe('deepseek-v4-flash');
   });
 
   it('keeps a stored model the provider still offers', async () => {

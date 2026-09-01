@@ -1,4 +1,9 @@
-import { CloudProviderId, ModelListResult, ProviderConfig } from '../../types/providers';
+import {
+  CloudProviderId,
+  ModelListResult,
+  ProviderCallResult,
+  ProviderConfig,
+} from '../../types/providers';
 import { callOpenAI, listOpenAIModels } from './openai';
 import { callClaude, listClaudeModels } from './claude';
 import { callGemini, listGeminiModels } from './gemini';
@@ -69,7 +74,7 @@ export type ProviderCallFn = (
   prompt: string,
   model: string,
   apiKey: string
-) => Promise<string | null>;
+) => Promise<ProviderCallResult>;
 
 export type ProviderModelListFn = (apiKey: string) => Promise<ModelListResult>;
 

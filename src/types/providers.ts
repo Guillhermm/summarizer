@@ -17,6 +17,18 @@ export type ModelListResult =
   | { ok: true; models: ModelOption[] }
   | { ok: false; reason: ModelListFailure };
 
+/**
+ * A failed provider call keeps the provider's own words. Without them the popup
+ * can only say "it failed", which hides the cases the user can actually act on:
+ * an exhausted balance, a retired model, a rate limit.
+ */
+export interface ProviderCallError {
+  status?: number;
+  message?: string;
+}
+
+export type ProviderCallResult = { ok: true; text: string } | ({ ok: false } & ProviderCallError);
+
 export interface ProviderConfig {
   id: ProviderId;
   label: string;

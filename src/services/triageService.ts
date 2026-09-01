@@ -1,5 +1,5 @@
 import { ContentType, KnowledgeLevel, TriageResult, Verdict } from '../types/triage';
-import { CloudProviderId, ProviderId } from '../types/providers';
+import { CloudProviderId, ProviderCallError, ProviderId } from '../types/providers';
 import { PROVIDER_CALLERS, DEFAULT_MODELS } from './providers';
 import { getChromeAITriage } from './chromeAIService';
 
@@ -55,6 +55,49 @@ export const parseTriageResponse = (raw: string): Omit<TriageResult, 'poweredBy'
   };
 };
 
+const PROVIDER_LABELS: Record<CloudProviderId, string> = {
+  openai: 'OpenAI',
+  claude: 'Claude',
+  gemini: 'Gemini',
+  deepseek: 'DeepSeek',
+};
+
+/**
+ * Repeats what the provider said, then adds the step that usually clears it. A
+ * bare "request failed" leaves the user with nothing to act on.
+ */
+const describeCallFailure = (
+  provider: CloudProviderId,
+  model: string,
+  failure: ProviderCallError
+): string => {
+  const label = PROVIDER_LABELS[provider];
+  const status = failure.status;
+  const detail = failure.message ? ` ${failure.message}` : '';
+
+  if (status === 401 || status === 403) {
+    return `${label} rejected your API key (${status}).${detail} Update it in the extension options.`;
+  }
+
+  if (status === 402) {
+    return `${label} says this account cannot be billed (402).${detail} Check your balance or billing with ${label}.`;
+  }
+
+  if (status === 404 || status === 400) {
+    return `${label} rejected the request for model "${model}" (${status}).${detail} Open the extension options and re-check your API key: the model list refreshes from the provider, and picking a listed model usually fixes this.`;
+  }
+
+  if (status === 429) {
+    return `${label} rate-limited this request (429).${detail} Wait a moment and try again.`;
+  }
+
+  if (status) {
+    return `${label} returned an error (${status}).${detail}`;
+  }
+
+  return `${label} could not be reached.${detail} Check your connection and try again.`;
+};
+
 const getProviderSettings = (): Promise<{
   provider: ProviderId;
   model: string;
@@ -104,16 +147,14 @@ export const triagePage = async (text: string): Promise<TriageResult> => {
 
   const prompt = buildPrompt(text, language);
   const caller = PROVIDER_CALLERS[provider as CloudProviderId];
-  const raw = await caller(prompt, model, apiKey);
+  const result = await caller(prompt, model, apiKey);
 
-  if (!raw) {
-    throw new Error(
-      `${provider} request failed. Open the extension options and re-check your API key — the model list refreshes from the provider once the key is verified.`
-    );
+  if (!result.ok) {
+    throw new Error(describeCallFailure(provider, model, result));
   }
 
   try {
-    return { ...parseTriageResponse(raw), poweredBy: provider };
+    return { ...parseTriageResponse(result.text), poweredBy: provider };
   } catch {
     throw new Error(`${provider} returned an unexpected response. Try a different model.`);
   }

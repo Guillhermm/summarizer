@@ -43,6 +43,14 @@ works and returns exactly the models that key can currently use.
   bundled fallback list.
 - **Provider unreachable**: the field says so, and nothing is changed.
 
+A replacement model is written to storage immediately, not on Save, because the
+model it replaced is one the provider has already refused.
+
+Verifying a key proves it is a real key, not that the account can spend. Providers
+accept a listing request on an account that will refuse a completion, so a key can
+verify and still fail at assessment time with, for example, an exhausted balance.
+The popup repeats whatever the provider said in that case.
+
 Until a key is verified, the dropdown shows a small bundled fallback list. Those
 entries are a starting point, not a guarantee: only the live catalog is authoritative.
 
@@ -109,7 +117,7 @@ Settings are stored in `chrome.storage.sync` and sync across devices when signed
 - TypeScript + React
 - Tailwind CSS v3 (custom prefix, no preflight bleed)
 - Webpack 5
-- Jest + ts-jest + React Testing Library (58 tests across 7 suites)
+- Jest + ts-jest + React Testing Library (66 tests across 8 suites)
 - ESLint + Prettier
 - GitHub Actions CI (lint + test on every push)
 

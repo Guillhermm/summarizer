@@ -164,11 +164,17 @@ export const Options = () => {
 
     setLiveModels((prev) => ({ ...prev, [target]: result.models }));
 
-    // Drop a stored selection the provider no longer offers.
+    // Drop a stored selection the provider no longer offers. The replacement is
+    // persisted straight away rather than waiting for Save: the old value is
+    // known bad, and until storage is updated the popup keeps failing with it.
     setKeys((prev) => {
       const current = prev[modelField(target)];
       if (result.models.length === 0 || result.models.some((m) => m.id === current)) return prev;
-      return { ...prev, [modelField(target)]: result.models[0].id };
+
+      const replacement = result.models[0].id;
+      chrome.storage.sync.set({ [modelField(target)]: replacement });
+
+      return { ...prev, [modelField(target)]: replacement };
     });
 
     if (announce) setKeyStatus('valid');

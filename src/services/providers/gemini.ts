@@ -1,5 +1,6 @@
-import { ModelListResult, ModelOption } from '../../types/providers';
+import { ModelListResult, ModelOption, ProviderCallResult } from '../../types/providers';
 import { fetchModelList, isChatModel } from './modelList';
+import { networkFailure, readProviderError } from './errors';
 
 interface GeminiModel {
   name?: string;
@@ -15,7 +16,7 @@ export const callGemini = async (
   prompt: string,
   model: string,
   apiKey: string
-): Promise<string | null> => {
+): Promise<ProviderCallResult> => {
   try {
     // Use header-based auth — safer than query param (not captured in logs or proxies).
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
@@ -40,15 +41,18 @@ export const callGemini = async (
     });
 
     if (!response.ok) {
-      console.error('[Triage] Gemini HTTP error:', response.status, await response.text());
-      return null;
+      const body = await response.text();
+      console.error('[Triage] Gemini HTTP error:', response.status, body);
+      return { ok: false, ...readProviderError(response.status, body) };
     }
 
     const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    return text ? { ok: true, text } : { ok: false, message: 'the response contained no text' };
   } catch (error) {
     console.error('[Triage] Gemini error:', error);
-    return null;
+    return { ok: false, ...networkFailure(error) };
   }
 };
 

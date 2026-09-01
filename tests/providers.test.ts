@@ -14,11 +14,11 @@ const mockOk = (body: object) =>
     text: () => Promise.resolve(JSON.stringify(body)),
   } as Response);
 
-const mockErr = (status = 401) =>
+const mockErrBody = (status: number, body: object) =>
   Promise.resolve({
     ok: false,
     status,
-    text: () => Promise.resolve('Unauthorized'),
+    text: () => Promise.resolve(JSON.stringify(body)),
   } as Response);
 
 beforeEach(() => mockFetch.mockReset());
@@ -29,7 +29,7 @@ describe('callOpenAI', () => {
       mockOk({ choices: [{ message: { content: '{"verdict":"recommended"}' } }] })
     );
     const result = await callOpenAI('prompt', 'gpt-4o-mini', 'sk-test');
-    expect(result).toBe('{"verdict":"recommended"}');
+    expect(result).toEqual({ ok: true, text: '{"verdict":"recommended"}' });
     expect(mockFetch).toHaveBeenCalledWith(
       'https://api.openai.com/v1/chat/completions',
       expect.objectContaining({
@@ -38,16 +38,16 @@ describe('callOpenAI', () => {
     );
   });
 
-  it('returns null on HTTP error', async () => {
-    mockFetch.mockReturnValueOnce(mockErr(401));
+  it('keeps the status and the provider message on HTTP error', async () => {
+    mockFetch.mockReturnValueOnce(mockErrBody(401, { error: { message: 'Incorrect API key' } }));
     const result = await callOpenAI('prompt', 'gpt-4o-mini', 'bad-key');
-    expect(result).toBeNull();
+    expect(result).toEqual({ ok: false, status: 401, message: 'Incorrect API key' });
   });
 
-  it('returns null on network failure', async () => {
+  it('reports a network failure with no status', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
     const result = await callOpenAI('prompt', 'gpt-4o-mini', 'sk-test');
-    expect(result).toBeNull();
+    expect(result).toEqual({ ok: false, message: 'Network error' });
   });
 });
 
@@ -55,7 +55,7 @@ describe('callClaude', () => {
   it('returns content on success', async () => {
     mockFetch.mockReturnValueOnce(mockOk({ content: [{ text: '{"verdict":"skip"}' }] }));
     const result = await callClaude('prompt', 'claude-sonnet-5', 'sk-ant-test');
-    expect(result).toBe('{"verdict":"skip"}');
+    expect(result).toEqual({ ok: true, text: '{"verdict":"skip"}' });
     expect(mockFetch).toHaveBeenCalledWith(
       'https://api.anthropic.com/v1/messages',
       expect.objectContaining({
@@ -68,10 +68,10 @@ describe('callClaude', () => {
     );
   });
 
-  it('returns null on HTTP error', async () => {
-    mockFetch.mockReturnValueOnce(mockErr(403));
+  it('keeps the status and the provider message on HTTP error', async () => {
+    mockFetch.mockReturnValueOnce(mockErrBody(403, { error: { message: 'permission denied' } }));
     const result = await callClaude('prompt', 'claude-sonnet-5', 'bad-key');
-    expect(result).toBeNull();
+    expect(result).toEqual({ ok: false, status: 403, message: 'permission denied' });
   });
 });
 
@@ -86,10 +86,10 @@ describe('callGemini', () => {
     expect((init as RequestInit).headers).toMatchObject({ 'x-goog-api-key': 'AIza-test' });
   });
 
-  it('returns null on HTTP error', async () => {
-    mockFetch.mockReturnValueOnce(mockErr(400));
+  it('keeps the status and the provider message on HTTP error', async () => {
+    mockFetch.mockReturnValueOnce(mockErrBody(400, { error: { message: 'API key not valid' } }));
     const result = await callGemini('prompt', 'gemini-3.7-flash', 'bad-key');
-    expect(result).toBeNull();
+    expect(result).toEqual({ ok: false, status: 400, message: 'API key not valid' });
   });
 });
 
@@ -105,9 +105,30 @@ describe('callDeepSeek', () => {
     );
   });
 
-  it('returns null on network failure', async () => {
+  it('reports a network failure with no status', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network error'));
     const result = await callDeepSeek('prompt', 'deepseek-v4-flash', 'sk-test');
-    expect(result).toBeNull();
+    expect(result).toEqual({ ok: false, message: 'Network error' });
+  });
+
+  // The shape DeepSeek returns for a key with no credit left.
+  it('surfaces an insufficient balance', async () => {
+    mockFetch.mockReturnValueOnce(
+      mockErrBody(402, { error: { message: 'Insufficient Balance', type: 'unknown_error' } })
+    );
+    const result = await callDeepSeek('prompt', 'deepseek-v4-flash', 'sk-test');
+    expect(result).toEqual({ ok: false, status: 402, message: 'Insufficient Balance' });
+  });
+
+  it('falls back to the raw body when the error is not JSON', async () => {
+    mockFetch.mockReturnValueOnce(
+      Promise.resolve({
+        ok: false,
+        status: 502,
+        text: () => Promise.resolve('Bad Gateway'),
+      } as Response)
+    );
+    const result = await callDeepSeek('prompt', 'deepseek-v4-flash', 'sk-test');
+    expect(result).toEqual({ ok: false, status: 502, message: 'Bad Gateway' });
   });
 });
