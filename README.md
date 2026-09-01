@@ -54,9 +54,18 @@ The popup repeats whatever the provider said in that case.
 Until a key is verified, the dropdown shows a small bundled fallback list. Those
 entries are a starting point, not a guarantee: only the live catalog is authoritative.
 
-The extension declares `host_permissions` for the four provider APIs. Chrome grants
-extension pages a CORS exemption only for hosts listed there, which is what lets the
-options page and popup call these APIs directly with your own key.
+The extension calls these APIs straight from the browser and declares no host
+permissions. OpenAI, Gemini and DeepSeek all return `access-control-allow-origin`
+for the extension's own origin, so their preflight passes unaided. Anthropic
+refuses browser origins by default and is the one exception: it needs the
+`anthropic-dangerous-direct-browser-access: true` header, which the Claude
+provider sends on every request. Dropping that header breaks Claude and nothing
+else.
+
+The trade-off is that this depends on the providers' CORS policy, which they can
+change. If one of them stops answering browser origins, the fix is to declare that
+host in `host_permissions` (Chrome exempts extension pages from CORS for hosts
+listed there); note that adding one is a permission change users may have to accept.
 
 ### Chrome AI setup
 
