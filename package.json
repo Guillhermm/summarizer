@@ -1,6 +1,6 @@
 {
   "name": "summarizer",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A browser extension to triage articles before you read them.",
   "main": "dist/summarizer.js",
   "scripts": {

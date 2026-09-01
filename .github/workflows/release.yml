@@ -30,14 +30,25 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Check the manifest version matches the tag
+        run: |
+          manifest=$(node -p "require('./public/manifest.json').version")
+          tag=${GITHUB_REF_NAME#v}
+          if [ "$manifest" != "$tag" ]; then
+            echo "manifest version $manifest does not match tag $tag" >&2
+            exit 1
+          fi
+
       - name: Build
         run: npm run build
 
+      # Zipped from inside dist/: the Chrome Web Store requires manifest.json at
+      # the root of the archive and rejects one nested in a folder.
       - name: Zip dist
-        run: zip -r page-triage-${{ github.ref_name }}.zip dist/
+        run: cd dist && zip -r ../summarizer-${{ github.ref_name }}.zip .
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: page-triage-${{ github.ref_name }}.zip
+          files: summarizer-${{ github.ref_name }}.zip
           generate_release_notes: true

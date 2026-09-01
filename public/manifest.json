@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Summarizer",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Triage any article in seconds \u2014 verdict, reading time, and key argument before you commit.",
   "author": "guillhermm_zenni@hotmail.com",
   "permissions": [

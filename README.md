@@ -117,7 +117,7 @@ Settings are stored in `chrome.storage.sync` and sync across devices when signed
 - TypeScript + React
 - Tailwind CSS v3 (custom prefix, no preflight bleed)
 - Webpack 5
-- Jest + ts-jest + React Testing Library (66 tests across 8 suites)
+- Jest + ts-jest + React Testing Library (69 tests across 9 suites)
 - ESLint + Prettier
 - GitHub Actions CI (lint + test on every push)
 
@@ -132,6 +132,20 @@ npm test
 ```bash
 npm run lint
 ```
+
+## Releasing
+
+The version lives in `public/manifest.json` and `package.json`, and the options
+footer reads it back from the manifest at runtime. Bump both, then tag:
+
+```bash
+git tag v2.1.0
+git push origin v2.1.0
+```
+
+The release workflow refuses to build if the tag and the manifest disagree, and
+zips from inside `dist/` because the Chrome Web Store requires `manifest.json` at
+the root of the archive.
 
 ## Contributing
 
